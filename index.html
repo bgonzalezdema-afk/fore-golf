@@ -16,7 +16,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 :root{
-  --navy:#0a2c4d;--navy2:#0e3a63;--red:#d8232a;--gold:#c8a84b;
+  --navy:#0a2c4d;--navy2:#0e3a63;--red:#d8232a;--gold:#c8a84b;--sky:#2475b0;
   --bg:#f0f2f0;--card:#fff;--b1:#dde2dd;--b2:#b8c0b8;
   --t1:#0a1f0f;--t2:#3a5040;--t3:#7a9080;
   --green:#1a7a3f;--gxl:#e6f2ea;
@@ -317,6 +317,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--t1);displ
         <div class="info-box"><div class="info-lbl">Índice</div><div class="info-val" id="inf-hdx">11</div></div>
       </div>
       <div class="hn-wrap" id="hoyo-nav"></div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+        <div style="font-size:11px;color:var(--t3);font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.4px">Scores</div>
+        <div id="saved-indicator" style="font-size:11px;color:var(--t3);font-family:'Oswald',sans-serif">· sin guardar</div>
+      </div>
       <div id="entries"></div>
       <div id="bonos-sec" style="display:none">
         <div class="divider"></div>
@@ -430,6 +434,27 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--t1);displ
     <div style="display:flex;gap:8px">
       <button class="btn btn-save" onclick="saveConfig()" style="flex:1"><i class="ti ti-check"></i> Guardar</button>
       <button class="btn btn-outline" onclick="closeModal('cfg-modal')" style="width:46px;padding:0"><i class="ti ti-x"></i></button>
+    </div>
+  </div>
+</div>
+
+<!-- COLOMBIANA BREAKDOWN MODAL -->
+<div id="col-breakdown-modal" class="overlay">
+  <div class="sheet">
+    <div class="drag"></div>
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
+      <i class="ti ti-star" style="font-size:20px;color:var(--gold)"></i>
+      <div class="sheet-title" id="col-breakdown-title" style="margin-bottom:0">Hoyo —</div>
+    </div>
+    <div id="col-breakdown-rows"></div>
+    <div id="col-breakdown-total"></div>
+    <div style="display:flex;gap:8px;margin-top:14px">
+      <button class="btn btn-save" id="col-breakdown-next" style="flex:1;height:50px;font-size:15px">
+        <i class="ti ti-arrow-right"></i> Siguiente
+      </button>
+      <button class="btn btn-outline" onclick="closeModal('col-breakdown-modal')" style="width:50px;padding:0">
+        <i class="ti ti-x"></i>
+      </button>
     </div>
   </div>
 </div>
@@ -576,12 +601,26 @@ function updateInf(){
 }
 
 /* ===== ENTRIES ===== */
+// Scores temporales del hoyo actual (no guardados aún)
+let tempScores = {};
+
+function initTemp(){
+  let h=S.ch;
+  if(!tempScores[h]){
+    // Si ya hay score guardado, arranca desde ese valor; si no, arranca desde el par
+    tempScores[h] = S.scores[h]
+      ? [...S.scores[h]]
+      : S.players.map(()=>S.pars[h-1]);
+  }
+}
+
 function renderEntries(){
   let h=S.ch, par=S.pars[h-1];
-  if(!S.scores[h]) S.scores[h]=S.players.map(()=>par);
+  initTemp();
   let el=document.getElementById('entries'); el.innerHTML='';
+  let saved = !!S.scores[h];
   S.players.forEach((p,i)=>{
-    let g=S.scores[h][i], st=hcpS(i,h), net=g-st, diff=net-par;
+    let g=tempScores[h][i], st=hcpS(i,h), net=g-st, diff=net-par;
     let pc=diff<=-2?'pill-eagle':diff===-1?'pill-birdie':diff===0?'pill-par':diff===1?'pill-bogey':'pill-db';
     let pt=diff<=-2?`Águila ${net}`:diff===-1?`Birdie ${net}`:diff===0?`Par ${net}`:diff===1?`Bogey ${net}`:`+${diff} neto`;
     let bc=diff<=-2?'eagle':diff===-1?'birdie':diff===0?'par':diff===1?'bogey':'dbogey';
@@ -598,17 +637,17 @@ function renderEntries(){
       </div>
     </div>`;
   });
+  // Saved indicator
+  let indicator = document.getElementById('saved-indicator');
+  if(indicator) indicator.textContent = saved ? '✓ guardado' : '· sin guardar';
+  if(indicator) indicator.style.color = saved ? 'var(--green)' : 'var(--t3)';
   renderBonos();
 }
 function adj(pi,d){
   let h=S.ch;
-  S.scores[h][pi]=Math.max(1,S.scores[h][pi]+d);
-  // update just the number display for speed
-  const el=document.getElementById('scn'+pi);
-  if(el) el.textContent=S.scores[h][pi];
-  // re-render to update pill and border color
+  initTemp();
+  tempScores[h][pi]=Math.max(1,tempScores[h][pi]+d);
   renderEntries();
-  saveState();
 }
 
 function renderBonos(){
@@ -616,9 +655,10 @@ function renderBonos(){
   if(!S.mods.colombiana){ sec.style.display='none'; return; }
   sec.style.display='block';
   let h=S.ch, par=S.pars[h-1], bs=S.bonos[h]||{};
+  initTemp();
   let bl=document.getElementById('bonos-list'); bl.innerHTML=''; let any=false;
   S.players.forEach((p,i)=>{
-    let net=S.scores[h][i]-hcpS(i,h), diff=net-par;
+    let net=tempScores[h][i]-hcpS(i,h), diff=net-par;
     S.colBonos.forEach(b=>{
       if(!b.on) return;
       if(b.id==='greenie'&&par!==3) return;
@@ -633,15 +673,151 @@ function renderBonos(){
 function togB(k,v,h){ if(!S.bonos[h]) S.bonos[h]={}; S.bonos[h][k]=v; saveState(); }
 
 function saveHoyo(){
-  saveState(); renderColLive(); renderDosLive(); renderNav();
-  showAlert('Hoyo '+S.ch+' guardado ✓');
-  if(S.ch<S.nh) setTimeout(()=>{ S.ch++; renderEntries(); renderNav(); updateInf(); },300);
+  let h=S.ch;
+  initTemp();
+  // Commit temp scores to saved scores
+  S.scores[h]=[...tempScores[h]];
+  saveState();
+  renderColLive(); renderDosLive(); renderNav();
+
+  // Show colombiana breakdown if active
+  if(S.mods.colombiana && pjsValidas(h)){
+    showColBreakdown(h);
+  } else {
+    showAlert('Hoyo '+h+' guardado ✓');
+    if(h<S.nh) setTimeout(()=>{ S.ch++; delete tempScores[S.ch]; renderEntries(); renderNav(); updateInf(); },300);
+  }
+}
+
+function pjsValidas(h){
+  let pjs=parejasH(h), tA=pjs[0], tB=pjs[1];
+  return tA&&tB&&isV(tA[0])&&isV(tA[1])&&isV(tB[0])&&isV(tB[1]);
+}
+
+function showColBreakdown(h){
+  let par=S.pars[h-1];
+  let pjs=parejasH(h), tA=pjs[0], tB=pjs[1];
+  let nA=tA.map(i=>S.scores[h][i]-hcpS(i,h));
+  let nB=tB.map(i=>S.scores[h][i]-hcpS(i,h));
+  let bestA=Math.min(...nA), bestB=Math.min(...nB);
+  let worstA=Math.max(...nA), worstB=Math.max(...nB);
+  let sumA=nA.reduce((a,b)=>a+b,0), sumB=nB.reduce((a,b)=>a+b,0);
+  let bs=S.bonos[h]||{};
+
+  let lines=[];
+
+  // Mejor neto
+  let mejor2=S.colBonos.find(b=>b.id==='mejor2')||{pts:2,on:true};
+  let pts2=2;
+  if(bestA<bestB){
+    let best=tA[nA.indexOf(Math.min(...nA))];
+    lines.push({ico:'🏆',lbl:'Mejor neto',det:`${S.players[best].n} (${bestA}) gana a ${bestB}`,pts:pts2,team:tA,side:'A'});
+  } else if(bestB<bestA){
+    let best=tB[nB.indexOf(Math.min(...nB))];
+    lines.push({ico:'🏆',lbl:'Mejor neto',det:`${S.players[best].n} (${bestB}) gana a ${bestA}`,pts:pts2,team:tB,side:'B'});
+  } else {
+    lines.push({ico:'🤝',lbl:'Mejor neto',det:`Empate (${bestA})`,pts:0,team:null,side:'='});
+  }
+
+  // Peor neto — gana el que NO tiene el peor
+  if(worstA<worstB){
+    lines.push({ico:'📍',lbl:'Peor neto',det:`${S.players[tB[nB.indexOf(Math.max(...nB))]].n} tiene el peor (${worstB})`,pts:1,team:tA,side:'A'});
+  } else if(worstB<worstA){
+    lines.push({ico:'📍',lbl:'Peor neto',det:`${S.players[tA[nA.indexOf(Math.max(...nA))]].n} tiene el peor (${worstA})`,pts:1,team:tB,side:'B'});
+  } else {
+    lines.push({ico:'🤝',lbl:'Peor neto',det:`Empate en peor (${worstA})`,pts:0,team:null,side:'='});
+  }
+
+  // Suma
+  if(sumA<sumB){
+    lines.push({ico:'➕',lbl:'Suma',det:`${sumA} vs ${sumB}`,pts:1,team:tA,side:'A'});
+  } else if(sumB<sumA){
+    lines.push({ico:'➕',lbl:'Suma',det:`${sumB} vs ${sumA}`,pts:1,team:tB,side:'B'});
+  } else {
+    lines.push({ico:'🤝',lbl:'Suma',det:`Empate (${sumA})`,pts:0,team:null,side:'='});
+  }
+
+  // Bonos
+  S.colBonos.forEach(b=>{
+    if(!b.on) return;
+    [...tA,...tB].forEach(pi=>{
+      if(b.id==='greenie'||b.id==='sandy'){
+        if(bs[b.id+'_'+pi]){
+          let team=tA.includes(pi)?tA:tB;
+          let side=tA.includes(pi)?'A':'B';
+          lines.push({ico:b.id==='greenie'?'🌿':'🏖️',lbl:b.lbl,det:S.players[pi].n,pts:b.pts,team,side});
+        }
+      }
+      if(b.id==='birdie'){
+        let net=S.scores[h][pi]-hcpS(pi,h);
+        if(net-par===-1){
+          let team=tA.includes(pi)?tA:tB;
+          let side=tA.includes(pi)?'A':'B';
+          lines.push({ico:'🐦',lbl:'Birdie',det:`${S.players[pi].n} (${net})`,pts:b.pts,team,side});
+        }
+      }
+      if(b.id==='eagle'){
+        let net=S.scores[h][pi]-hcpS(pi,h);
+        if(net-par<=-2){
+          let team=tA.includes(pi)?tA:tB;
+          let side=tA.includes(pi)?'A':'B';
+          lines.push({ico:'🦅',lbl:'Águila',det:`${S.players[pi].n} (${net})`,pts:b.pts,team,side});
+        }
+      }
+    });
+  });
+
+  // Totals
+  let ptA=lines.filter(l=>l.side==='A').reduce((s,l)=>s+l.pts,0);
+  let ptB=lines.filter(l=>l.side==='B').reduce((s,l)=>s+l.pts,0);
+  let nmA=tA.map(i=>S.players[i].n).join(' & ');
+  let nmB=tB.map(i=>S.players[i].n).join(' & ');
+
+  let rowsHtml=lines.map(l=>{
+    let color=l.side==='A'?'var(--green)':l.side==='B'?'var(--sky)':'var(--t3)';
+    let ptsHtml=l.pts>0?`<span style="font-family:'Oswald',sans-serif;font-size:14px;font-weight:700;color:${color};white-space:nowrap">+${l.pts} pt${l.pts>1?'s':''}</span>`:`<span style="font-size:12px;color:var(--t3)">—</span>`;
+    let teamLabel=l.side==='A'?`<span style="font-size:10px;color:var(--green);font-family:'Oswald',sans-serif;font-weight:700">Pareja A</span>`:
+                  l.side==='B'?`<span style="font-size:10px;color:var(--sky);font-family:'Oswald',sans-serif;font-weight:700">Pareja B</span>`:
+                  `<span style="font-size:10px;color:var(--t3)">Empate</span>`;
+    return `<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--b1)">
+      <span style="font-size:20px;flex-shrink:0">${l.ico}</span>
+      <div style="flex:1">
+        <div style="font-size:13px;font-weight:600;color:var(--t1)">${l.lbl}</div>
+        <div style="font-size:11px;color:var(--t3);margin-top:1px">${l.det}</div>
+      </div>
+      <div style="text-align:right">${ptsHtml}<br>${teamLabel}</div>
+    </div>`;
+  }).join('');
+
+  let totalHtml=`<div style="display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px;padding:14px 12px;background:var(--navy);border-radius:10px;margin-top:12px">
+    <div style="text-align:center">
+      <div style="font-size:10px;color:rgba(255,255,255,.5);font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.4px;margin-bottom:2px">${nmA}</div>
+      <div style="font-family:'Oswald',sans-serif;font-size:36px;font-weight:700;color:${ptA>ptB?'var(--gold)':'rgba(255,255,255,.6)'}">${ptA}</div>
+    </div>
+    <div style="font-family:'Oswald',sans-serif;font-size:14px;color:rgba(255,255,255,.3);font-weight:700">VS</div>
+    <div style="text-align:center">
+      <div style="font-size:10px;color:rgba(255,255,255,.5);font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.4px;margin-bottom:2px">${nmB}</div>
+      <div style="font-family:'Oswald',sans-serif;font-size:36px;font-weight:700;color:${ptB>ptA?'var(--gold)':'rgba(255,255,255,.6)'}">${ptB}</div>
+    </div>
+  </div>`;
+
+  // Populate and open modal
+  document.getElementById('col-breakdown-title').textContent=`Hoyo ${h} — Par ${par}`;
+  document.getElementById('col-breakdown-rows').innerHTML=rowsHtml;
+  document.getElementById('col-breakdown-total').innerHTML=totalHtml;
+  document.getElementById('col-breakdown-next').textContent=h<S.nh?`Siguiente → H${h+1}`:'Finalizar';
+  document.getElementById('col-breakdown-next').onclick=()=>{
+    closeModal('col-breakdown-modal');
+    if(h<S.nh){ S.ch++; delete tempScores[S.ch]; renderEntries(); renderNav(); updateInf(); }
+  };
+  openModal('col-breakdown-modal');
 }
 
 /* ===== NUEVA RONDA ===== */
 function confirmNuevaRonda(){ openModal('confirm-modal'); }
 function nuevaRonda(keepParejas){
   S.scores={}; S.bonos={}; S.ch=1; S.scView=0;
+  tempScores={};
   if(!keepParejas){
     S.parejas=[[[-1,-1],[-1,-1]],[[-1,-1],[-1,-1]],[[-1,-1],[-1,-1]]];
   }
@@ -767,33 +943,52 @@ function renderTarjeta(){
     <td>${S.pars.slice(0,S.nh).reduce((a,b)=>a+b,0)}</td>
   </tr>`;
 
-  // Hdcp row
+  // Hole index row (discreet reference)
   rows+=`<tr class="rhdx">
-    <td class="${sc}">Hdcp</td>
-    ${h1.map(h=>`<td>${S.hdx[h-1]}</td>`).join('')}
+    <td class="${sc}" style="font-size:9px;color:var(--t3)">IDX</td>
+    ${h1.map(h=>`<td style="font-size:9px;color:var(--t3)">${S.hdx[h-1]}</td>`).join('')}
     <td>—</td>
-    ${h2.map(h=>`<td>${S.hdx[h-1]}</td>`).join('')}
+    ${h2.map(h=>`<td style="font-size:9px;color:var(--t3)">${S.hdx[h-1]}</td>`).join('')}
     ${h2.length?'<td>—</td>':''}
     <td>—</td>
   </tr>`;
 
+  // Hdcp rows — one per player showing strokes received per hole
+  S.players.forEach((p,pi)=>{
+    let diff = Math.max(0, p.hcp - minHcp());
+    let totalStrks = h1.concat(h2).reduce((s,h)=>s+hcpS(pi,h),0);
+    rows+=`<tr class="rhdx">
+      <td class="${sc}" style="color:${p.col};font-size:9px">
+        <span style="font-family:'Oswald',sans-serif;font-weight:700">${av(p)}</span>
+        <span style="color:var(--t3)"> +${totalStrks}</span>
+      </td>
+      ${h1.map(h=>{let s=hcpS(pi,h);return `<td style="color:${s>0?'#1a1a1a':'var(--b2)'};font-weight:${s>0?'700':'400'}">${s>0?'•'.repeat(s):'·'}</td>`;}).join('')}
+      <td>—</td>
+      ${h2.map(h=>{let s=hcpS(pi,h);return `<td style="color:${s>0?'#1a1a1a':'var(--b2)'};font-weight:${s>0?'700':'400'}">${s>0?'•'.repeat(s):'·'}</td>`;}).join('')}
+      ${h2.length?'<td>—</td>':''}
+      <td style="font-weight:700;color:var(--t2)">${totalStrks}</td>
+    </tr>`;
+  });
+
   // One row per player
   S.players.forEach((p,pi)=>{
     let oG=0,iG=0,oN=0,iN=0;
-    let cells1=h1.map(h=>{
+
+    const mkCell = (h) => {
       let sc2=S.scores[h];
-      if(!sc2) return `<td style="color:var(--t3)">·</td>`;
-      let g=sc2[pi],n=g-hcpS(pi,h),d=n-S.pars[h-1];
-      oG+=g; oN+=n;
-      return `<td><div class="circ ${ccls(d)}">${g}</div></td>`;
-    }).join('');
-    let cells2=h2.map(h=>{
-      let sc2=S.scores[h];
-      if(!sc2) return `<td style="color:var(--t3)">·</td>`;
-      let g=sc2[pi],n=g-hcpS(pi,h),d=n-S.pars[h-1];
-      iG+=g; iN+=n;
-      return `<td><div class="circ ${ccls(d)}">${g}</div></td>`;
-    }).join('');
+      let strks=hcpS(pi,h);
+      let dots = strks===1
+        ? `<span style="position:absolute;top:-1px;right:0px;font-size:7px;line-height:1;color:#1a1a1a">•</span>`
+        : strks>=2
+        ? `<span style="position:absolute;top:-1px;right:-1px;font-size:6px;line-height:1;color:#1a1a1a;letter-spacing:-0.5px">••</span>`
+        : '';
+      if(!sc2) return `<td style="position:relative"><div style="position:relative;display:inline-block">${dots}<span style="color:var(--t3)">·</span></div></td>`;
+      let g=sc2[pi], n=g-strks, d=n-S.pars[h-1];
+      return `<td style="position:relative"><div style="position:relative;display:inline-block">${dots}<div class="circ ${ccls(d)}">${g}</div></div></td>`;
+    };
+
+    let cells1 = h1.map(h => { if(S.scores[h]){oG+=S.scores[h][pi];oN+=S.scores[h][pi]-hcpS(pi,h);} return mkCell(h); }).join('');
+    let cells2 = h2.map(h => { if(S.scores[h]){iG+=S.scores[h][pi];iN+=S.scores[h][pi]-hcpS(pi,h);} return mkCell(h); }).join('');
     let tG=oG+iG, tN=oN+iN, tP=S.pars.slice(0,S.nh).reduce((a,b)=>a+b,0);
     let df=tN-tP, ds=df===0?'E':df>0?'+'+df:''+df;
     rows+=`<tr>
