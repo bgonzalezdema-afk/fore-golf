@@ -1,39 +1,50 @@
-const CACHE = 'fore-golf-v1';
+const CACHE = 'fore-golf-v3';
 const ASSETS = [
   '/',
   '/index.html',
   '/manifest.json',
-  'https://fonts.googleapis.com/css2?family=Graduate&family=Oswald:wght@400;500;600;700&family=DM+Sans:wght@400;500;600&display=swap',
-  'https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css'
 ];
 
 self.addEventListener('install', e => {
+  // Force immediate activation — don't wait
+  self.skipWaiting();
   e.waitUntil(
     caches.open(CACHE).then(c => c.addAll(ASSETS)).catch(() => {})
   );
-  self.skipWaiting();
 });
 
 self.addEventListener('activate', e => {
+  // Delete ALL old caches immediately
   e.waitUntil(
     caches.keys().then(keys =>
       Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
-    )
+    ).then(() => self.clients.claim())
   );
-  self.clients.claim();
 });
 
 self.addEventListener('fetch', e => {
+  // Network first for HTML — always get fresh version
+  if(e.request.url.endsWith('.html') || e.request.url.endsWith('/') || e.request.mode === 'navigate'){
+    e.respondWith(
+      fetch(e.request).then(res => {
+        let clone = res.clone();
+        caches.open(CACHE).then(c => c.put(e.request, clone));
+        return res;
+      }).catch(() => caches.match(e.request))
+    );
+    return;
+  }
+  // Cache first for other assets (icons, fonts)
   e.respondWith(
     caches.match(e.request).then(cached => {
-      if (cached) return cached;
+      if(cached) return cached;
       return fetch(e.request).then(res => {
-        if (res && res.status === 200 && res.type === 'basic') {
-          const clone = res.clone();
+        if(res && res.status === 200){
+          let clone = res.clone();
           caches.open(CACHE).then(c => c.put(e.request, clone));
         }
         return res;
-      }).catch(() => caches.match('/index.html'));
+      }).catch(() => cached);
     })
   );
 });
