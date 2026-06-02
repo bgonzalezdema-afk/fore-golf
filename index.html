@@ -109,6 +109,16 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--t1);displ
 .bono-item{display:flex;align-items:center;padding:11px 12px;background:var(--card);border-radius:8px;margin-bottom:6px;border:1px solid var(--b1)}
 .bono-item label{display:flex;align-items:center;gap:10px;cursor:pointer;width:100%;font-size:13px}
 .bono-item input[type=checkbox]{width:22px;height:22px;cursor:pointer;flex-shrink:0;accent-color:var(--navy)}
+/* BONO POPUP per player */
+.bono-popup-overlay{display:none;position:fixed;inset:0;z-index:400;background:rgba(0,0,0,.4);align-items:flex-end;justify-content:center}
+.bono-popup-overlay.open{display:flex}
+.bono-popup{background:var(--card);border-radius:16px 16px 0 0;padding:16px;width:100%;max-width:480px;padding-bottom:calc(16px + env(safe-area-inset-bottom))}
+.bono-popup-drag{width:36px;height:3px;background:var(--b2);border-radius:2px;margin:0 auto 12px}
+.bono-popup-title{font-family:'Oswald',sans-serif;font-size:14px;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:.6px;margin-bottom:12px;display:flex;align-items:center;gap:7px}
+.bono-btn{width:38px;height:38px;border-radius:8px;border:1.5px solid var(--b2);background:var(--bg);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:.15s}
+.bono-btn.active{border-color:var(--navy);background:var(--navy)}
+.bono-btn:active{transform:scale(.92)}
+.greenie-badge{display:inline-block;background:var(--gold);color:#fff;font-family:'Oswald',sans-serif;font-size:11px;font-weight:700;padding:1px 6px;border-radius:4px;margin-left:4px}
 
 /* LIVE */
 .live-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;margin-bottom:5px;border:1px solid var(--b1);background:var(--bg)}
@@ -242,6 +252,40 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--t1);displ
 .tag-g{background:var(--gxl);color:var(--green)}.tag-b{background:#e3f0fc;color:#1a4a7a}
 .info-note{font-size:10px;color:var(--t3);padding:7px 10px;background:var(--bg);border-radius:6px;margin-top:6px;font-family:'Oswald',sans-serif;letter-spacing:.2px}
 
+/* ONBOARDING */
+#onboarding{position:fixed;inset:0;background:var(--navy);z-index:500;display:flex;flex-direction:column;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:env(safe-area-inset-bottom)}
+.ob-header{padding:28px 20px 16px;text-align:center;flex-shrink:0}
+.ob-logo{width:72px;height:90px;margin:0 auto 12px}
+.ob-brand{font-family:'Graduate',serif;font-size:32px;color:#fff;letter-spacing:3px;line-height:1}
+.ob-brand span{color:var(--red)}
+.ob-sub{font-family:'Oswald',sans-serif;font-size:11px;color:rgba(255,255,255,.4);letter-spacing:2px;text-transform:uppercase;margin-top:4px}
+.ob-body{flex:1;padding:8px 16px 24px}
+.ob-section{background:rgba(255,255,255,.06);border-radius:12px;padding:16px;margin-bottom:12px;border:1px solid rgba(255,255,255,.08)}
+.ob-section-title{font-family:'Oswald',sans-serif;font-size:12px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px;display:flex;align-items:center;gap:6px}
+.ob-section-title i{font-size:15px}
+.ob-btn{height:48px;border-radius:8px;border:1.5px solid rgba(255,255,255,.2);background:transparent;color:rgba(255,255,255,.75);font-family:'Oswald',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:.15s;letter-spacing:.3px;text-transform:uppercase;display:flex;align-items:center;justify-content:center;gap:8px;width:100%}
+.ob-btn.sel{background:rgba(255,255,255,.12);border-color:var(--gold);color:#fff}
+.ob-btn:active{transform:scale(.97)}
+.ob-inp{background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.15);border-radius:8px;padding:10px 12px;font-family:'DM Sans',sans-serif;font-size:15px;color:#fff;width:100%}
+.ob-inp::placeholder{color:rgba(255,255,255,.3)}
+.ob-inp:focus{outline:none;border-color:var(--gold)}
+.ob-inp-sm{width:60px;height:40px;text-align:center;background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.15);border-radius:8px;font-family:'Oswald',sans-serif;font-size:16px;font-weight:700;color:#fff;padding:0}
+.ob-inp-sm:focus{outline:none;border-color:var(--gold)}
+.ob-player-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.ob-player-row:last-child{margin-bottom:0}
+.ob-av{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;font-family:'Oswald',sans-serif}
+.ob-mod-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.08)}
+.ob-mod-row:last-child{border-bottom:none;padding-bottom:0}
+.ob-mod-name{font-family:'Oswald',sans-serif;font-size:13px;color:#fff;font-weight:600;text-transform:uppercase;letter-spacing:.3px}
+.ob-mod-desc{font-size:11px;color:rgba(255,255,255,.4);margin-top:2px}
+.ob-tgl{width:42px;height:24px;border-radius:12px;background:rgba(255,255,255,.15);position:relative;cursor:pointer;transition:.2s;flex-shrink:0;display:inline-block}
+.ob-tgl.on{background:var(--green)}
+.ob-tgl::after{content:'';position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:.2s}
+.ob-tgl.on::after{transform:translateX(18px)}
+.ob-start-btn{width:100%;height:56px;border-radius:12px;border:none;background:linear-gradient(135deg,var(--red),#a01820);color:#fff;font-family:'Oswald',sans-serif;font-size:18px;font-weight:700;cursor:pointer;letter-spacing:.8px;text-transform:uppercase;display:flex;align-items:center;justify-content:center;gap:10px;margin-top:4px;transition:.15s}
+.ob-start-btn:active{transform:scale(.97)}
+.ob-add-btn{height:40px;background:transparent;border:1.5px dashed rgba(255,255,255,.2);border-radius:8px;color:rgba(255,255,255,.5);font-family:'Oswald',sans-serif;font-size:12px;font-weight:600;cursor:pointer;width:100%;display:flex;align-items:center;justify-content:center;gap:6px;margin-top:8px;text-transform:uppercase;letter-spacing:.4px}
+
 /* CONFIRM MODAL */
 .confirm-sheet{background:var(--card);border-radius:16px 16px 0 0;padding:24px 18px;width:100%;max-width:480px;padding-bottom:calc(24px + env(safe-area-inset-bottom))}
 .confirm-icon{font-size:48px;text-align:center;margin-bottom:12px;display:block}
@@ -252,6 +296,83 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--t1);displ
 </style>
 </head>
 <body>
+<!-- ONBOARDING -->
+<div id="onboarding">
+  <div class="ob-header">
+    <img src="icon-512.png" class="ob-logo" alt="FORE!">
+    <div class="ob-brand">FORE<span>!</span></div>
+    <div class="ob-sub">Golf Scorecard</div>
+  </div>
+
+  <div class="ob-body">
+
+    <!-- 1. Cancha -->
+    <div class="ob-section">
+      <div class="ob-section-title"><i class="ti ti-map-pin"></i>Cancha</div>
+      <button class="ob-btn sel" id="ob-cancha-btn">🏌️ Club de Polo</button>
+    </div>
+
+    <!-- 2. Hoyos y salida -->
+    <div class="ob-section">
+      <div class="ob-section-title"><i class="ti ti-flag"></i>Ronda</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
+        <button class="ob-btn sel" id="ob-nh-18" onclick="obSelectNh(18)">18 hoyos</button>
+        <button class="ob-btn" id="ob-nh-9" onclick="obSelectNh(9)">9 hoyos</button>
+      </div>
+      <div style="font-size:11px;color:rgba(255,255,255,.4);font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Sale por</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <button class="ob-btn sel" id="ob-start-1" onclick="obSelectStart(1)">🏌️ Hoyo 1</button>
+        <button class="ob-btn" id="ob-start-10" onclick="obSelectStart(10)">⛳ Hoyo 10</button>
+      </div>
+    </div>
+
+    <!-- 3. Jugadores -->
+    <div class="ob-section">
+      <div class="ob-section-title"><i class="ti ti-users"></i>Jugadores</div>
+      <div id="ob-players-list"></div>
+      <button class="ob-add-btn" onclick="obAddPlayer()"><i class="ti ti-plus"></i> Agregar jugador</button>
+    </div>
+
+    <!-- 4. Modalidades -->
+    <div class="ob-section">
+      <div class="ob-section-title"><i class="ti ti-trophy"></i>Modalidades</div>
+      <div class="ob-mod-row">
+        <div>
+          <div class="ob-mod-name">Colombiana</div>
+          <div class="ob-mod-desc">Parejas 2 vs 2 · puntos por hoyo</div>
+        </div>
+        <div class="ob-tgl on" id="ob-tgl-col" onclick="obToggleMod('colombiana',this)"></div>
+      </div>
+      <div class="ob-mod-row" id="ob-rot-row">
+        <div>
+          <div class="ob-mod-name" style="font-size:12px">Rotación de parejas c/6 hoyos</div>
+        </div>
+        <div class="ob-tgl" id="ob-tgl-rot" onclick="obToggleMod('colRot',this)"></div>
+      </div>
+      <div class="ob-mod-row">
+        <div>
+          <div class="ob-mod-name">2 · 0 · −2</div>
+          <div class="ob-mod-desc">3 jugadores · mejor/medio/peor</div>
+        </div>
+        <div class="ob-tgl" id="ob-tgl-dos" onclick="obToggleMod('dos',this)"></div>
+      </div>
+      <div class="ob-mod-row">
+        <div>
+          <div class="ob-mod-name">Stroke Play</div>
+          <div class="ob-mod-desc">Tarjeta simple · score bruto y neto</div>
+        </div>
+        <div class="ob-tgl" id="ob-tgl-stroke" onclick="obToggleMod('stroke',this)"></div>
+      </div>
+    </div>
+
+    <!-- Start button -->
+    <button class="ob-start-btn" onclick="obStartRound()">
+      <i class="ti ti-player-play"></i> ¡A jugar!
+    </button>
+
+  </div>
+</div>
+
 <div id="app">
 
 <!-- HEADER -->
@@ -260,31 +381,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--t1);displ
   <div class="hdr-body">
     <div class="hdr-top">
       <div class="logo-row">
-        <svg class="fore-svg" viewBox="0 0 460 580" xmlns="http://www.w3.org/2000/svg">
-          <rect x="16" y="16" width="428" height="548" rx="6" fill="#0e3a63"/>
-          <rect x="28" y="28" width="404" height="524" rx="4" fill="none" stroke="rgba(200,168,75,0.35)" stroke-width="2"/>
-          <path d="M146 250 L134 356" fill="none" stroke="white" stroke-width="40" stroke-linecap="round"/>
-          <path d="M134 356 L142 426" fill="none" stroke="white" stroke-width="33" stroke-linecap="round"/>
-          <path d="M136 430 L162 415" fill="none" stroke="white" stroke-width="19" stroke-linecap="round"/>
-          <path d="M174 250 L182 352" fill="none" stroke="white" stroke-width="44" stroke-linecap="round"/>
-          <path d="M182 352 L186 430" fill="none" stroke="white" stroke-width="36" stroke-linecap="round"/>
-          <path d="M182 434 L220 434" fill="none" stroke="white" stroke-width="23" stroke-linecap="round"/>
-          <path d="M120 118 Q152 104 196 116 L190 258 L130 260 Z" fill="white"/>
-          <path d="M188 126 L222 104" fill="none" stroke="white" stroke-width="32" stroke-linecap="round"/>
-          <path d="M222 104 L236 70" fill="none" stroke="white" stroke-width="26" stroke-linecap="round"/>
-          <path d="M122 124 L94 100" fill="none" stroke="white" stroke-width="30" stroke-linecap="round"/>
-          <path d="M94 100 L84 72" fill="none" stroke="white" stroke-width="24" stroke-linecap="round"/>
-          <path d="M150 96 L154 122" fill="none" stroke="white" stroke-width="30" stroke-linecap="round"/>
-          <circle cx="152" cy="66" r="34" fill="white"/>
-          <circle cx="66" cy="38" r="10" fill="white"/>
-          <circle cx="81" cy="33" r="11" fill="white"/>
-          <circle cx="96" cy="38" r="10" fill="white"/>
-          <text x="124" y="156" font-family="Graduate" font-size="94" fill="#d8232a">F</text>
-          <text x="124" y="250" font-family="Graduate" font-size="94" fill="#d8232a">O</text>
-          <text x="124" y="344" font-family="Graduate" font-size="94" fill="#d8232a">R</text>
-          <text x="124" y="438" font-family="Graduate" font-size="94" fill="#d8232a">E</text>
-          <text x="124" y="520" font-family="Graduate" font-size="94" fill="#d8232a">!</text>
-        </svg>
+        <img src="icon-192.png" class="fore-svg" alt="FORE!">
         <div>
           <div class="brand-name">FORE<span>!</span></div>
           <div class="brand-sub">Golf Scorecard</div>
@@ -334,7 +431,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--t1);displ
       </div>
     </div>
     <div id="col-live" style="display:none">
-      <div class="card">
+      <div class="card" id="col-live-card">
         <div class="card-title"><i class="ti ti-star"></i>Colombiana</div>
         <div id="col-live-content"></div>
       </div>
@@ -352,7 +449,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--t1);displ
     <div class="card">
       <div class="card-title"><i class="ti ti-clipboard-list"></i>Scorecard</div>
       <div id="player-tabs" style="display:none"></div>
-      <div class="sc-scroll"><table class="sc-tbl" id="sc-tbl"></table></div>
+
+      <div style="font-size:11px;font-weight:700;color:var(--navy);font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px">Score Bruto</div>
+      <div class="sc-scroll"><table class="sc-tbl" id="sc-tbl-gross"></table></div>
+
+      <div style="font-size:11px;font-weight:700;color:var(--navy);font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.6px;margin:14px 0 6px">Score Neto</div>
+      <div class="sc-scroll"><table class="sc-tbl" id="sc-tbl-net"></table></div>
       <div class="legend" style="margin-top:8px">
         <div class="leg-item"><div class="circ ce" style="width:16px;height:16px;font-size:8px">•</div>Águila</div>
         <div class="leg-item"><div class="circ cb" style="width:16px;height:16px;font-size:8px">•</div>Birdie</div>
@@ -423,6 +525,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--t1);displ
         <option value="9">9 hoyos</option>
       </select>
     </div>
+    <div class="inp-row"><label>Sale por</label>
+      <select class="inp" id="cfg-start">
+        <option value="1">Hoyo 1 (vuelta normal)</option>
+        <option value="10">Hoyo 10 (segunda vuelta primero)</option>
+      </select>
+    </div>
     <div class="divider"></div>
     <div style="font-size:11px;font-weight:700;color:var(--navy);margin-bottom:5px;font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.5px">Par</div>
     <div class="hg" id="cfg-pars"></div>
@@ -435,6 +543,15 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--t1);displ
       <button class="btn btn-save" onclick="saveConfig()" style="flex:1"><i class="ti ti-check"></i> Guardar</button>
       <button class="btn btn-outline" onclick="closeModal('cfg-modal')" style="width:46px;padding:0"><i class="ti ti-x"></i></button>
     </div>
+  </div>
+</div>
+
+<!-- BONO POPUP per player -->
+<div id="bono-popup-overlay" class="bono-popup-overlay" onclick="closeBonoPop()">
+  <div class="bono-popup" onclick="event.stopPropagation()">
+    <div class="bono-popup-drag"></div>
+    <div class="bono-popup-title" id="bono-pop-title">Bonos</div>
+    <div id="bono-pop-content"></div>
   </div>
 </div>
 
@@ -466,12 +583,27 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--t1);displ
     <span class="confirm-icon">⛳</span>
     <div class="confirm-title">Nueva ronda</div>
     <div class="confirm-msg">Se borran los scores de la ronda actual.<br>Jugadores y configuración se mantienen.</div>
+
+    <div style="margin-bottom:16px">
+      <div style="font-size:11px;font-weight:700;color:var(--navy);font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">¿Por qué hoyo salen?</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <button id="start-h1-btn" onclick="selectStart(1)"
+          style="height:52px;border-radius:10px;border:2px solid var(--navy);background:var(--navy);color:#fff;font-family:'Oswald',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:.15s">
+          🏌️ Hoyo 1
+        </button>
+        <button id="start-h10-btn" onclick="selectStart(10)"
+          style="height:52px;border-radius:10px;border:2px solid var(--b2);background:var(--bg);color:var(--t2);font-family:'Oswald',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:.15s">
+          ⛳ Hoyo 10
+        </button>
+      </div>
+    </div>
+
     <div style="display:flex;flex-direction:column;gap:10px">
       <button class="btn btn-save" style="height:50px;font-size:15px" onclick="nuevaRonda(true)">
-        <i class="ti ti-refresh"></i> Nueva ronda · mantener parejas
+        <i class="ti ti-refresh"></i> Mantener parejas
       </button>
       <button class="btn" style="height:50px;font-size:14px;background:#e8f0f8;color:var(--navy2);border:1.5px solid #a3bbda" onclick="nuevaRonda(false)">
-        <i class="ti ti-users"></i> Nueva ronda · cambiar parejas
+        <i class="ti ti-users"></i> Cambiar parejas
       </button>
       <button class="btn btn-outline" style="height:46px;font-size:13px" onclick="closeModal('confirm-modal')">
         <i class="ti ti-x"></i> Cancelar
@@ -501,7 +633,7 @@ const DEFAULT = {
     {id:'birdie', lbl:'Birdie',pts:1,on:true},
     {id:'eagle',  lbl:'Águila',pts:2,on:true},
   ],
-  scores:{}, bonos:{}, ch:1, scView:0,
+  scores:{}, bonos:{}, ch:1, scView:0, startHoyo:1, setupDone:false,
 };
 const PCOLS=['#1a7a3f','#2475b0','#c8a84b','#c0392b','#7b2fa8','#e67e22'];
 const RDOTS=['#1a7a3f','#2475b0','#c8a84b'];
@@ -619,29 +751,66 @@ function renderEntries(){
   initTemp();
   let el=document.getElementById('entries'); el.innerHTML='';
   let saved = !!S.scores[h];
+  let isPar3 = par===3;
+
   S.players.forEach((p,i)=>{
     let g=tempScores[h][i], st=hcpS(i,h), net=g-st, diff=net-par;
+    let grossDiff=g-par;
     let pc=diff<=-2?'pill-eagle':diff===-1?'pill-birdie':diff===0?'pill-par':diff===1?'pill-bogey':'pill-db';
     let pt=diff<=-2?`Águila ${net}`:diff===-1?`Birdie ${net}`:diff===0?`Par ${net}`:diff===1?`Bogey ${net}`:`+${diff} neto`;
     let bc=diff<=-2?'eagle':diff===-1?'birdie':diff===0?'par':diff===1?'bogey':'dbogey';
     let hi=st>0?`+${st} golpe${st>1?'s':''} · dif ${p.hcp-minHcp()}`:'scratch relativo';
+
+    // Count active bonos for this player on this hole
+    let bs=S.bonos[h]||{};
+    let activeBonos=S.colBonos.filter(b=>{
+      if(!b.on||!S.mods.colombiana) return false;
+      if(b.id==='greenie') return isPar3 && bs[`greenie_${i}`];
+      if(b.id==='sandy') return bs[`sandy_${i}`];
+      if(b.id==='birdie') return grossDiff===-1 && bs[`birdie_${i}`];
+      if(b.id==='eagle') return grossDiff<=-2 && bs[`eagle_${i}`];
+      return false;
+    });
+    let bonoCount=activeBonos.length;
+    let bonoIndicator = bonoCount>0
+      ? `<span style="position:absolute;top:-4px;right:-4px;width:14px;height:14px;background:var(--red);border-radius:50%;font-size:8px;font-weight:700;color:#fff;display:flex;align-items:center;justify-content:center">${bonoCount}</span>`
+      : '';
+
+    // Greenie accumulated value
+    let greenieVal = isPar3 && S.mods.colombiana ? calcGreenieValue(h) : 0;
+    let greenieTag = isPar3 && S.mods.colombiana && greenieVal>1
+      ? `<span class="greenie-badge">🌿 ×${greenieVal}</span>` : '';
+
+    // Show bono btn only if colombiana active
+    let bonoBtnHtml = S.mods.colombiana
+      ? `<button class="bono-btn ${bonoCount>0?'active':''}" style="position:relative;margin-right:6px" onclick="openBonoPop(${i},event)">
+          🎯${bonoIndicator}
+        </button>`
+      : '';
+
     el.innerHTML+=`<div class="entry-block ${bc}">
       <div class="e-top">
-        <div><div class="e-name" style="color:${p.col}">${p.n}</div><div class="e-meta">Hcp ${p.hcp} · ${hi}</div></div>
+        <div>
+          <div class="e-name" style="color:${p.col}">${p.n}${greenieTag}</div>
+          <div class="e-meta">Hcp ${p.hcp} · ${hi}</div>
+        </div>
         <span class="pill ${pc}">${pt}</span>
       </div>
       <div class="sc-row">
         <button class="sc-btn m" onclick="adj(${i},-1)">−</button>
+        ${bonoBtnHtml}
         <div class="sc-num" id="scn${i}">${g}</div>
         <button class="sc-btn p" onclick="adj(${i},1)">+</button>
       </div>
     </div>`;
   });
-  // Saved indicator
+
   let indicator = document.getElementById('saved-indicator');
   if(indicator) indicator.textContent = saved ? '✓ guardado' : '· sin guardar';
   if(indicator) indicator.style.color = saved ? 'var(--green)' : 'var(--t3)';
-  renderBonos();
+  // hide old bonos section
+  let sec=document.getElementById('bonos-sec');
+  if(sec) sec.style.display='none';
 }
 function adj(pi,d){
   let h=S.ch;
@@ -650,26 +819,120 @@ function adj(pi,d){
   renderEntries();
 }
 
-function renderBonos(){
-  let sec=document.getElementById('bonos-sec');
-  if(!S.mods.colombiana){ sec.style.display='none'; return; }
-  sec.style.display='block';
-  let h=S.ch, par=S.pars[h-1], bs=S.bonos[h]||{};
-  initTemp();
-  let bl=document.getElementById('bonos-list'); bl.innerHTML=''; let any=false;
-  S.players.forEach((p,i)=>{
-    let net=tempScores[h][i]-hcpS(i,h), diff=net-par;
-    S.colBonos.forEach(b=>{
-      if(!b.on) return;
-      if(b.id==='greenie'&&par!==3) return;
-      if(b.id==='birdie'&&diff>-1) return;
-      if(b.id==='eagle'&&diff>-2) return;
-      let k=`${b.id}_${i}`; any=true;
-      bl.innerHTML+=`<div class="bono-item"><label><input type="checkbox" ${bs[k]?'checked':''} onchange="togB('${k}',this.checked,${h})"><span><strong>${p.n}</strong> — ${b.lbl}</span></label></div>`;
-    });
-  });
-  if(!any) bl.innerHTML='<div style="font-size:11px;color:var(--t3);padding:6px 0">No aplican bonos en este hoyo.</div>';
+/* ===== GREENIE ACUMULADO =====
+   Recorre par 3s en orden real de juego.
+   Si se parte del H10: orden = 10,11,...,18,1,...,9
+   El acumulado cruza el cambio de vuelta sin problema.
+*/
+function getPlayOrder(){
+  // startHoyo puede setearse manualmente, o se infiere de scores guardados
+  let start = S.startHoyo || 1;
+  if(!S.startHoyo){
+    let saved = Object.keys(S.scores).map(Number);
+    if(saved.length > 0){
+      let secondHalf = saved.filter(h=>h>=10).length;
+      let firstHalf  = saved.filter(h=>h<=9).length;
+      if(secondHalf > firstHalf && secondHalf >= 2){
+        start = Math.min(...saved.filter(h=>h>=10));
+      } else {
+        start = Math.min(...saved);
+      }
+    }
+  }
+  let order = [];
+  for(let i=0; i<S.nh; i++) order.push(((start-1+i)%S.nh)+1);
+  return order;
 }
+
+function calcGreenieValue(targetHoyo){
+  let b = S.colBonos.find(x=>x.id==='greenie');
+  if(!b || !b.on) return 1;
+  let basePts = b.pts || 1;
+
+  let playOrder = getPlayOrder();
+  let targetPos = playOrder.indexOf(targetHoyo);
+  if(targetPos < 0) return basePts;
+
+  let accumulated = 0;
+  for(let pos=0; pos<targetPos; pos++){
+    let h = playOrder[pos];
+    if(S.pars[h-1] !== 3) continue;
+    if(!S.scores[h]) continue; // no jugado aún — no cuenta
+    let bs  = S.bonos[h] || {};
+    let won = S.players.some((_,i) => bs['greenie_'+i]);
+    if(won){
+      accumulated = 0; // alguien lo ganó — reset
+    } else {
+      accumulated += basePts; // nadie lo ganó — acumula
+    }
+  }
+  return basePts + accumulated;
+}
+
+/* ===== BONO POPUP ===== */
+function openBonoPop(playerIdx, evt){
+  evt.stopPropagation();
+  let h=S.ch, par=S.pars[h-1], isPar3=par===3;
+  let p=S.players[playerIdx];
+  initTemp();
+  let gross=tempScores[h][playerIdx];
+  let grossDiff=gross-par;
+  let bs=S.bonos[h]||{};
+
+  let title=document.getElementById('bono-pop-title');
+  title.innerHTML=`<span style="color:${p.col}">${p.n}</span> — Bonos H${h}`;
+
+  let content=document.getElementById('bono-pop-content');
+  content.innerHTML='';
+
+  let any=false;
+  S.colBonos.forEach(b=>{
+    if(!b.on) return;
+    // Filter applicable bonos
+    if(b.id==='greenie' && !isPar3) return;
+    if(b.id==='birdie'  && grossDiff>-1) return;
+    if(b.id==='eagle'   && grossDiff>-2) return;
+
+    let k=`${b.id}_${playerIdx}`;
+    let checked=bs[k]||false;
+    any=true;
+
+    // Greenie label with accumulated value
+    let label=b.lbl;
+    let extra='';
+    if(b.id==='greenie'){
+      let val=calcGreenieValue(h);
+      extra=val>1?`<span class="greenie-badge">×${val} = ${val} pts</span>`:'';
+      label=`Greenie${extra?'':` (+${b.pts} pt${b.pts>1?'s':''})`}`;
+    } else {
+      label=`${b.lbl} (+${b.pts} pt${b.pts>1?'s':''})`;
+    }
+
+    content.innerHTML+=`<div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--b1)">
+      <div style="font-size:24px">${b.id==='greenie'?'🌿':b.id==='sandy'?'🏖️':b.id==='birdie'?'🐦':'🦅'}</div>
+      <div style="flex:1">
+        <div style="font-size:14px;font-weight:600;color:var(--t1)">${label}</div>
+        ${b.id==='greenie'&&calcGreenieValue(h)>1?`<div style="font-size:11px;color:var(--gold);margin-top:2px">Acumulado: vale ${calcGreenieValue(h)} pts esta vez</div>`:''}
+      </div>
+      <label style="display:flex;align-items:center;cursor:pointer">
+        <input type="checkbox" style="width:24px;height:24px;accent-color:var(--navy);cursor:pointer" ${checked?'checked':''}
+          onchange="togB('${k}',this.checked,${h});renderEntries()">
+      </label>
+    </div>`;
+  });
+
+  if(!any){
+    content.innerHTML=`<div style="text-align:center;padding:20px 0;color:var(--t3);font-size:13px">No aplican bonos para ${p.n} en H${h}</div>`;
+  }
+
+  document.getElementById('bono-popup-overlay').classList.add('open');
+}
+
+function closeBonoPop(){
+  document.getElementById('bono-popup-overlay').classList.remove('open');
+}
+
+function renderBonos(){ /* legacy — now handled per player in popup */ }
 function togB(k,v,h){ if(!S.bonos[h]) S.bonos[h]={}; S.bonos[h][k]=v; saveState(); }
 
 function saveHoyo(){
@@ -681,11 +944,11 @@ function saveHoyo(){
   renderColLive(); renderDosLive(); renderNav();
 
   // Show colombiana breakdown if active
-  if(S.mods.colombiana && pjsValidas(h)){
+  if(S.mods.colombiana){
     showColBreakdown(h);
   } else {
     showAlert('Hoyo '+h+' guardado ✓');
-    if(h<S.nh) setTimeout(()=>{ S.ch++; delete tempScores[S.ch]; renderEntries(); renderNav(); updateInf(); },300);
+    if(h<S.nh) setTimeout(()=>{ S.ch++; renderEntries(); renderNav(); updateInf(); },300);
   }
 }
 
@@ -696,6 +959,20 @@ function pjsValidas(h){
 
 function showColBreakdown(h){
   let par=S.pars[h-1];
+
+  // If parejas not configured, show simple save confirmation
+  if(!pjsValidas(h)){
+    document.getElementById('col-breakdown-title').textContent=`Hoyo ${h} guardado ✓`;
+    document.getElementById('col-breakdown-rows').innerHTML=`<div style="padding:14px 0;text-align:center;color:var(--t3);font-size:13px">Configura las parejas en Modalidades<br>para ver el desglose de la Colombiana.</div>`;
+    document.getElementById('col-breakdown-total').innerHTML='';
+    document.getElementById('col-breakdown-next').textContent=h<S.nh?`Siguiente → H${h+1}`:'Finalizar';
+    document.getElementById('col-breakdown-next').onclick=()=>{
+      closeModal('col-breakdown-modal');
+      if(h<S.nh){ S.ch++; renderEntries(); renderNav(); updateInf(); }
+    };
+    openModal('col-breakdown-modal');
+    return;
+  }
   let pjs=parejasH(h), tA=pjs[0], tB=pjs[1];
   let nA=tA.map(i=>S.scores[h][i]-hcpS(i,h));
   let nB=tB.map(i=>S.scores[h][i]-hcpS(i,h));
@@ -741,27 +1018,35 @@ function showColBreakdown(h){
   S.colBonos.forEach(b=>{
     if(!b.on) return;
     [...tA,...tB].forEach(pi=>{
-      if(b.id==='greenie'||b.id==='sandy'){
-        if(bs[b.id+'_'+pi]){
+      if(b.id==='greenie'){
+        if(bs['greenie_'+pi]){
+          let gVal=calcGreenieValue(h); // accumulated value
           let team=tA.includes(pi)?tA:tB;
           let side=tA.includes(pi)?'A':'B';
-          lines.push({ico:b.id==='greenie'?'🌿':'🏖️',lbl:b.lbl,det:S.players[pi].n,pts:b.pts,team,side});
+          lines.push({ico:'🌿',lbl:`Greenie${gVal>1?` ×${gVal}`:''}`,det:`${S.players[pi].n}${gVal>1?` (acumulado ${gVal} pts)`:''}`,pts:gVal,team,side});
+        }
+      }
+      if(b.id==='sandy'){
+        if(bs['sandy_'+pi]){
+          let team=tA.includes(pi)?tA:tB;
+          let side=tA.includes(pi)?'A':'B';
+          lines.push({ico:'🏖️',lbl:b.lbl,det:S.players[pi].n,pts:b.pts,team,side});
         }
       }
       if(b.id==='birdie'){
-        let net=S.scores[h][pi]-hcpS(pi,h);
-        if(net-par===-1){
+        let gross=S.scores[h][pi];
+        if(gross-par===-1){
           let team=tA.includes(pi)?tA:tB;
           let side=tA.includes(pi)?'A':'B';
-          lines.push({ico:'🐦',lbl:'Birdie',det:`${S.players[pi].n} (${net})`,pts:b.pts,team,side});
+          lines.push({ico:'🐦',lbl:'Birdie',det:`${S.players[pi].n} (bruto ${gross})`,pts:b.pts,team,side});
         }
       }
       if(b.id==='eagle'){
-        let net=S.scores[h][pi]-hcpS(pi,h);
-        if(net-par<=-2){
+        let gross=S.scores[h][pi];
+        if(gross-par<=-2){
           let team=tA.includes(pi)?tA:tB;
           let side=tA.includes(pi)?'A':'B';
-          lines.push({ico:'🦅',lbl:'Águila',det:`${S.players[pi].n} (${net})`,pts:b.pts,team,side});
+          lines.push({ico:'🦅',lbl:'Águila',det:`${S.players[pi].n} (bruto ${gross})`,pts:b.pts,team,side});
         }
       }
     });
@@ -808,22 +1093,46 @@ function showColBreakdown(h){
   document.getElementById('col-breakdown-next').textContent=h<S.nh?`Siguiente → H${h+1}`:'Finalizar';
   document.getElementById('col-breakdown-next').onclick=()=>{
     closeModal('col-breakdown-modal');
-    if(h<S.nh){ S.ch++; delete tempScores[S.ch]; renderEntries(); renderNav(); updateInf(); }
+    if(h<S.nh){ S.ch++; renderEntries(); renderNav(); updateInf(); }
   };
   openModal('col-breakdown-modal');
 }
 
 /* ===== NUEVA RONDA ===== */
-function confirmNuevaRonda(){ openModal('confirm-modal'); }
+let pendingStart = 1; // hoyo de inicio seleccionado en el modal
+
+function confirmNuevaRonda(){
+  pendingStart = S.startHoyo || 1;
+  openModal('confirm-modal');
+  // Reflect current selection visually
+  setTimeout(()=>selectStart(pendingStart, true), 50);
+}
+
+function selectStart(h, silent){
+  pendingStart = h;
+  let b1=document.getElementById('start-h1-btn');
+  let b10=document.getElementById('start-h10-btn');
+  if(!b1||!b10) return;
+  if(h===1){
+    b1.style.background='var(--navy)'; b1.style.color='#fff'; b1.style.borderColor='var(--navy)';
+    b10.style.background='var(--bg)';  b10.style.color='var(--t2)'; b10.style.borderColor='var(--b2)';
+  } else {
+    b10.style.background='var(--navy)'; b10.style.color='#fff'; b10.style.borderColor='var(--navy)';
+    b1.style.background='var(--bg)';   b1.style.color='var(--t2)'; b1.style.borderColor='var(--b2)';
+  }
+}
+
 function nuevaRonda(keepParejas){
-  S.scores={}; S.bonos={}; S.ch=1; S.scView=0;
+  S.scores={}; S.bonos={}; S.startHoyo=pendingStart; S.ch=pendingStart; S.scView=0;
+  S.setupDone=false;
   tempScores={};
   if(!keepParejas){
     S.parejas=[[[-1,-1],[-1,-1]],[[-1,-1],[-1,-1]],[[-1,-1],[-1,-1]]];
   }
   saveState(); closeModal('confirm-modal');
-  renderNav(); renderEntries(); updateInf(); renderColLive(); renderDosLive();
-  showAlert('Nueva ronda iniciada ✓');
+  // Show onboarding pre-filled with current players/settings
+  initOnboarding();
+  document.getElementById('onboarding').style.display='flex';
 }
 
 /* ===== COLOMBIANA ===== */
@@ -847,9 +1156,14 @@ function calcCol(){
     let bs=S.bonos[h]||{};
     S.colBonos.forEach(b=>{
       if(!b.on) return;
-      if(b.id==='greenie'||b.id==='sandy'){ tA.forEach(i=>{if(bs[b.id+'_'+i]) cA.push({lbl:b.lbl,pts:b.pts});}); tB.forEach(i=>{if(bs[b.id+'_'+i]) cB.push({lbl:b.lbl,pts:b.pts});}); }
-      if(b.id==='birdie'){ if(tA.some(i=>S.scores[h][i]-hcpS(i,h)-par===-1)) cA.push({lbl:'Birdie',pts:b.pts}); if(tB.some(i=>S.scores[h][i]-hcpS(i,h)-par===-1)) cB.push({lbl:'Birdie',pts:b.pts}); }
-      if(b.id==='eagle'){ if(tA.some(i=>S.scores[h][i]-hcpS(i,h)-par<=-2)) cA.push({lbl:'Águila',pts:b.pts}); if(tB.some(i=>S.scores[h][i]-hcpS(i,h)-par<=-2)) cB.push({lbl:'Águila',pts:b.pts}); }
+      if(b.id==='greenie'){
+        let gVal=calcGreenieValue(h);
+        tA.forEach(i=>{if(bs['greenie_'+i]) cA.push({lbl:'Greenie',pts:gVal});});
+        tB.forEach(i=>{if(bs['greenie_'+i]) cB.push({lbl:'Greenie',pts:gVal});});
+      }
+      if(b.id==='sandy'){ tA.forEach(i=>{if(bs['sandy_'+i]) cA.push({lbl:b.lbl,pts:b.pts});}); tB.forEach(i=>{if(bs['sandy_'+i]) cB.push({lbl:b.lbl,pts:b.pts});}); }
+      if(b.id==='birdie'){ if(tA.some(i=>S.scores[h][i]-par===-1)) cA.push({lbl:'Birdie',pts:b.pts}); if(tB.some(i=>S.scores[h][i]-par===-1)) cB.push({lbl:'Birdie',pts:b.pts}); }
+      if(b.id==='eagle'){ if(tA.some(i=>S.scores[h][i]-par<=-2)) cA.push({lbl:'Águila',pts:b.pts}); if(tB.some(i=>S.scores[h][i]-par<=-2)) cB.push({lbl:'Águila',pts:b.pts}); }
     });
     let ptA=cA.reduce((s,c)=>s+c.pts,0), ptB=cB.reduce((s,c)=>s+c.pts,0);
     [[tA,ptA,cA,nA],[tB,ptB,cB,nB]].forEach(([team,pts,concs,nets])=>{
@@ -867,18 +1181,76 @@ function renderColLive(){
   let cl=document.getElementById('col-live');
   if(!S.mods.colombiana){ cl.style.display='none'; return; }
   cl.style.display='block';
-  let{acum}=calcCol();
-  let sorted=S.players.map((p,i)=>({...p,i,pts:acum[i]})).sort((a,b)=>b.pts-a.pts);
-  document.getElementById('col-live-content').innerHTML=sorted.map((p,pos)=>`
-    <div class="live-item ${pos===0&&p.pts>0?'top':''}">
-      <div style="font-family:'Oswald',sans-serif;font-size:15px;font-weight:700;color:${pos===0&&p.pts>0?'rgba(255,255,255,.4)':'var(--t3)'};width:20px">${pos+1}</div>
-      <div class="live-av" style="background:${p.col};color:#fff">${av(p)}</div>
-      <div style="flex:1">
-        <div style="font-family:'Oswald',sans-serif;font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;color:${pos===0&&p.pts>0?'var(--gold)':p.col}">${p.n}</div>
-        <div style="font-size:10px;color:${pos===0&&p.pts>0?'rgba(255,255,255,.45)':'var(--t3)'}">Hcp ${p.hcp}</div>
-      </div>
-      <div class="live-pts">${p.pts}</div>
-    </div>`).join('');
+  let{acum,rondas}=calcCol();
+
+  if(!S.mods.colRot){
+    // ── MODO PAREJA FIJA: marcador Pareja A vs Pareja B ──
+    let pjs=S.parejas[0];
+    let tA=pjs[0], tB=pjs[1];
+    let parejaOk = isV(tA[0])&&isV(tA[1])&&isV(tB[0])&&isV(tB[1]);
+
+    if(!parejaOk){
+      document.getElementById('col-live-content').innerHTML=
+        `<div style="text-align:center;padding:14px 0;color:var(--t3);font-size:12px;font-family:'Oswald',sans-serif">Configura las parejas en Modalidades</div>`;
+      return;
+    }
+
+    let ptsA = tA.reduce((s,i)=>s+acum[i],0) / 2; // cada jugador tiene los mismos pts → tomar uno
+    // Actually each player of the pair has the same accumulated pts, just take tA[0]
+    ptsA = acum[tA[0]];
+    let ptsB = acum[tB[0]];
+    let diff = Math.abs(ptsA - ptsB);
+    let nmA = tA.map(i=>S.players[i].n).join(' & ');
+    let nmB = tB.map(i=>S.players[i].n).join(' & ');
+
+    let winA = ptsA > ptsB, winB = ptsB > ptsA, tie = ptsA === ptsB;
+    let diffLabel = tie ? 'PAR' : `+${diff}`;
+    let diffColor = tie ? 'rgba(255,255,255,.4)' : 'var(--gold)';
+
+    document.getElementById('col-live-content').innerHTML=`
+      <div style="display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px;padding:4px 0">
+
+        <!-- Pareja A -->
+        <div style="text-align:center">
+          <div style="font-family:'Oswald',sans-serif;font-size:52px;font-weight:700;line-height:1;color:${winA?'var(--navy)':'var(--t3)'}">${ptsA}</div>
+          <div style="font-size:10px;color:var(--t3);font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.4px;margin-top:4px">${nmA}</div>
+          <div style="display:flex;justify-content:center;gap:4px;margin-top:5px">
+            ${tA.map(i=>`<div style="width:26px;height:26px;border-radius:50%;background:${S.players[i].col};display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;font-family:'Oswald',sans-serif">${av(S.players[i])}</div>`).join('')}
+          </div>
+        </div>
+
+        <!-- Centro -->
+        <div style="text-align:center;min-width:56px">
+          <div style="font-family:'Oswald',sans-serif;font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px">${winA?'← gana':winB?'gana →':'─'}</div>
+          <div style="font-family:'Oswald',sans-serif;font-size:28px;font-weight:700;color:${tie?'var(--t3)':'var(--red)'};line-height:1">${diffLabel}</div>
+          <div style="font-family:'Oswald',sans-serif;font-size:10px;color:var(--b2);margin-top:2px">VS</div>
+        </div>
+
+        <!-- Pareja B -->
+        <div style="text-align:center">
+          <div style="font-family:'Oswald',sans-serif;font-size:52px;font-weight:700;line-height:1;color:${winB?'var(--navy)':'var(--t3)'}">${ptsB}</div>
+          <div style="font-size:10px;color:var(--t3);font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.4px;margin-top:4px">${nmB}</div>
+          <div style="display:flex;justify-content:center;gap:4px;margin-top:5px">
+            ${tB.map(i=>`<div style="width:26px;height:26px;border-radius:50%;background:${S.players[i].col};display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;font-family:'Oswald',sans-serif">${av(S.players[i])}</div>`).join('')}
+          </div>
+        </div>
+
+      </div>`;
+
+  } else {
+    // ── MODO ROTACIÓN: ranking individual ──
+    let sorted=S.players.map((p,i)=>({...p,i,pts:acum[i]})).sort((a,b)=>b.pts-a.pts);
+    document.getElementById('col-live-content').innerHTML=sorted.map((p,pos)=>`
+      <div class="live-item ${pos===0&&p.pts>0?'top':''}">
+        <div style="font-family:'Oswald',sans-serif;font-size:15px;font-weight:700;color:${pos===0&&p.pts>0?'rgba(255,255,255,.4)':'var(--t3)'};width:20px">${pos+1}</div>
+        <div class="live-av" style="background:${p.col};color:#fff">${av(p)}</div>
+        <div style="flex:1">
+          <div style="font-family:'Oswald',sans-serif;font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;color:${pos===0&&p.pts>0?'var(--gold)':p.col}">${p.n}</div>
+          <div style="font-size:10px;color:${pos===0&&p.pts>0?'rgba(255,255,255,.45)':'var(--t3)'}">R1:${rondas[0][p.i].pts} · R2:${rondas[1][p.i].pts} · R3:${rondas[2][p.i].pts}</div>
+        </div>
+        <div class="live-pts">${p.pts}</div>
+      </div>`).join('');
+  }
 }
 
 /* ===== 2-0-(-2) ===== */
@@ -911,112 +1283,155 @@ function renderDosLive(){
     </div>`).join('');
 }
 
-/* ===== TARJETA — todos los jugadores en una tabla ===== */
+/* ===== TARJETA — Gross + Neto ===== */
 function ccls(d){ return d<=-2?'ce':d===-1?'cb':d===0?'cp':d===1?'cbo':'cdb'; }
+
 function renderTarjeta(){
-  // hide unused tabs div
   document.getElementById('player-tabs').innerHTML='';
   let h1=[], h2=[];
   for(let h=1;h<=Math.min(9,S.nh);h++) h1.push(h);
   for(let h=10;h<=S.nh;h++) h2.push(h);
   const sc='sc';
-  const sumPar=(hs)=>hs.reduce((a,h)=>a+S.pars[h-1],0);
-  const sumYds=(hs)=>hs.reduce((a,h)=>a+(S.yds[h-1]||0),0);
+  const sumPar =(hs)=>hs.reduce((a,h)=>a+S.pars[h-1],0);
+  const sumYds =(hs)=>hs.reduce((a,h)=>a+(S.yds[h-1]||0),0);
+  const allH = h1.concat(h2);
 
-  // Header
-  let rows=`<tr>
+  // ── Header row (shared) ──────────────────────────
+  const hdrRow=`<tr>
     <th class="${sc}">Jugador</th>
-    ${h1.map(h=>`<th>${h}</th>`).join('')}
-    <th>Out</th>
-    ${h2.map(h=>`<th>${h}</th>`).join('')}
-    ${h2.length?'<th>In</th>':''}
+    ${h1.map(h=>`<th>${h}</th>`).join('')}<th>Out</th>
+    ${h2.map(h=>`<th>${h}</th>`).join('')}${h2.length?'<th>In</th>':''}
     <th>Tot</th>
   </tr>`;
 
-  // Par row
-  rows+=`<tr class="rpar">
+  const parRow=`<tr class="rpar">
     <td class="${sc}">Par</td>
-    ${h1.map(h=>`<td>${S.pars[h-1]}</td>`).join('')}
-    <td>${sumPar(h1)}</td>
-    ${h2.map(h=>`<td>${S.pars[h-1]}</td>`).join('')}
-    ${h2.length?`<td>${sumPar(h2)}</td>`:''}
+    ${h1.map(h=>`<td>${S.pars[h-1]}</td>`).join('')}<td>${sumPar(h1)}</td>
+    ${h2.map(h=>`<td>${S.pars[h-1]}</td>`).join('')}${h2.length?`<td>${sumPar(h2)}</td>`:''}
     <td>${S.pars.slice(0,S.nh).reduce((a,b)=>a+b,0)}</td>
   </tr>`;
 
-  // Hole index row (discreet reference)
-  rows+=`<tr class="rhdx">
+  // IDX row — hole difficulty index, tiny
+  const idxRow=`<tr class="rhdx">
     <td class="${sc}" style="font-size:9px;color:var(--t3)">IDX</td>
-    ${h1.map(h=>`<td style="font-size:9px;color:var(--t3)">${S.hdx[h-1]}</td>`).join('')}
-    <td>—</td>
-    ${h2.map(h=>`<td style="font-size:9px;color:var(--t3)">${S.hdx[h-1]}</td>`).join('')}
-    ${h2.length?'<td>—</td>':''}
+    ${h1.map(h=>`<td style="font-size:9px;color:var(--t3)">${S.hdx[h-1]}</td>`).join('')}<td>—</td>
+    ${h2.map(h=>`<td style="font-size:9px;color:var(--t3)">${S.hdx[h-1]}</td>`).join('')}${h2.length?'<td>—</td>':''}
     <td>—</td>
   </tr>`;
 
-  // Hdcp rows — one per player showing strokes received per hole
+  // HCP rows — one per player: shows • per hole + total differential
+  let hcpRows='';
   S.players.forEach((p,pi)=>{
-    let diff = Math.max(0, p.hcp - minHcp());
-    let totalStrks = h1.concat(h2).reduce((s,h)=>s+hcpS(pi,h),0);
-    rows+=`<tr class="rhdx">
-      <td class="${sc}" style="color:${p.col};font-size:9px">
-        <span style="font-family:'Oswald',sans-serif;font-weight:700">${av(p)}</span>
-        <span style="color:var(--t3)"> +${totalStrks}</span>
+    let total=allH.reduce((s,h)=>s+hcpS(pi,h),0);
+    if(total===0) return; // scratch player — skip row
+    hcpRows+=`<tr class="rhdx">
+      <td class="${sc}" style="font-size:9px">
+        <span style="font-family:'Oswald',sans-serif;font-weight:700;color:${p.col}">${av(p)}</span>
+        <span style="color:var(--t3)"> +${total}</span>
       </td>
-      ${h1.map(h=>{let s=hcpS(pi,h);return `<td style="color:${s>0?'#1a1a1a':'var(--b2)'};font-weight:${s>0?'700':'400'}">${s>0?'•'.repeat(s):'·'}</td>`;}).join('')}
+      ${h1.map(h=>{
+        let s=hcpS(pi,h);
+        return s>0
+          ? `<td style="font-size:10px;font-weight:700;color:#111">${'•'.repeat(s)}</td>`
+          : `<td style="color:var(--b2)">·</td>`;
+      }).join('')}
       <td>—</td>
-      ${h2.map(h=>{let s=hcpS(pi,h);return `<td style="color:${s>0?'#1a1a1a':'var(--b2)'};font-weight:${s>0?'700':'400'}">${s>0?'•'.repeat(s):'·'}</td>`;}).join('')}
+      ${h2.map(h=>{
+        let s=hcpS(pi,h);
+        return s>0
+          ? `<td style="font-size:10px;font-weight:700;color:#111">${'•'.repeat(s)}</td>`
+          : `<td style="color:var(--b2)">·</td>`;
+      }).join('')}
       ${h2.length?'<td>—</td>':''}
-      <td style="font-weight:700;color:var(--t2)">${totalStrks}</td>
+      <td style="font-weight:700;color:var(--t2)">${total}</td>
     </tr>`;
   });
 
-  // One row per player
+  // ── GROSS table ──────────────────────────────────
+  let grossRows='';
   S.players.forEach((p,pi)=>{
-    let oG=0,iG=0,oN=0,iN=0;
+    let oG=0, iG=0;
+    let diff=Math.max(0, p.hcp-minHcp()); // palos de ventaja diferencial
 
-    const mkCell = (h) => {
-      let sc2=S.scores[h];
+    const cell=(h)=>{
       let strks=hcpS(pi,h);
-      let dots = strks===1
-        ? `<span style="position:absolute;top:-1px;right:0px;font-size:7px;line-height:1;color:#1a1a1a">•</span>`
+      let sc2=S.scores[h];
+      if(!sc2){
+        // empty cell — just show dot if has stroke advantage, blank otherwise
+        return strks>0
+          ? `<td style="color:var(--b2);font-size:8px;vertical-align:top;padding-top:3px">${'•'.repeat(strks)}</td>`
+          : `<td></td>`;
+      }
+      let g=sc2[pi], gd=g-S.pars[h-1];
+      let dotSpan= strks===1
+        ? `<span style="position:absolute;top:-5px;right:-4px;font-size:8px;color:#111;line-height:1;font-weight:700">•</span>`
         : strks>=2
-        ? `<span style="position:absolute;top:-1px;right:-1px;font-size:6px;line-height:1;color:#1a1a1a;letter-spacing:-0.5px">••</span>`
+        ? `<span style="position:absolute;top:-5px;right:-5px;font-size:7px;color:#111;line-height:1;font-weight:700">••</span>`
         : '';
-      if(!sc2) return `<td style="position:relative"><div style="position:relative;display:inline-block">${dots}<span style="color:var(--t3)">·</span></div></td>`;
-      let g=sc2[pi], n=g-strks, d=n-S.pars[h-1];
-      return `<td style="position:relative"><div style="position:relative;display:inline-block">${dots}<div class="circ ${ccls(d)}">${g}</div></div></td>`;
+      return `<td><div style="position:relative;display:inline-block">${dotSpan}<div class="circ ${ccls(gd)}">${g}</div></div></td>`;
     };
 
-    let cells1 = h1.map(h => { if(S.scores[h]){oG+=S.scores[h][pi];oN+=S.scores[h][pi]-hcpS(pi,h);} return mkCell(h); }).join('');
-    let cells2 = h2.map(h => { if(S.scores[h]){iG+=S.scores[h][pi];iN+=S.scores[h][pi]-hcpS(pi,h);} return mkCell(h); }).join('');
-    let tG=oG+iG, tN=oN+iN, tP=S.pars.slice(0,S.nh).reduce((a,b)=>a+b,0);
-    let df=tN-tP, ds=df===0?'E':df>0?'+'+df:''+df;
-    rows+=`<tr>
+    h1.forEach(h=>{ if(S.scores[h]) oG+=S.scores[h][pi]; });
+    h2.forEach(h=>{ if(S.scores[h]) iG+=S.scores[h][pi]; });
+    let tG=oG+iG;
+    let gds=tG?(tG-S.pars.slice(0,S.nh).reduce((a,b)=>a+b,0)):null;
+    let gdsStr=gds===null?'':gds===0?'E':gds>0?'+'+gds:''+gds;
+
+    grossRows+=`<tr>
       <td class="${sc}" style="color:${p.col}">
-        <span style="font-family:'Oswald',sans-serif;font-weight:700;letter-spacing:.2px">${av(p)}</span>
-        <sup style="font-size:8px;color:var(--t3)"> ${p.hcp}</sup>
+        <span style="font-family:'Oswald',sans-serif;font-weight:700">${av(p)}</span>
+        ${diff>0?`<sup style="font-size:8px;color:var(--t3)"> +${diff}</sup>`:''}
       </td>
-      ${cells1}
+      ${h1.map(h=>cell(h)).join('')}
       <td style="font-weight:700;font-family:'Oswald',sans-serif">${oG||'—'}</td>
-      ${cells2}
+      ${h2.map(h=>cell(h)).join('')}
       ${h2.length?`<td style="font-weight:700;font-family:'Oswald',sans-serif">${iG||'—'}</td>`:''}
       <td style="font-weight:700;font-family:'Oswald',sans-serif">
-        ${tG||'—'}<sup style="font-size:8px;color:var(--gold)">${tN?ds:''}</sup>
+        ${tG||'—'}${gdsStr?`<sup style="font-size:8px;color:var(--t3)"> ${gdsStr}</sup>`:''}
       </td>
     </tr>`;
   });
 
-  // Yardas row
-  rows+=`<tr class="ryds">
+  // ── NET table ────────────────────────────────────
+  let netRows='';
+  S.players.forEach((p,pi)=>{
+    let oN=0, iN=0;
+    const cellN=(h)=>{
+      let sc2=S.scores[h];
+      if(!sc2) return `<td></td>`;
+      let g=sc2[pi], strks=hcpS(pi,h), net=g-strks, d=net-S.pars[h-1];
+      return `<td><div class="circ ${ccls(d)}">${net}</div></td>`;
+    };
+    h1.forEach(h=>{ if(S.scores[h]) oN+=S.scores[h][pi]-hcpS(pi,h); });
+    h2.forEach(h=>{ if(S.scores[h]) iN+=S.scores[h][pi]-hcpS(pi,h); });
+    let tN=oN+iN, tP=S.pars.slice(0,S.nh).reduce((a,b)=>a+b,0);
+    let df=tN-tP, ds=df===0?'E':df>0?'+'+df:''+df;
+    netRows+=`<tr>
+      <td class="${sc}" style="color:${p.col}">
+        <span style="font-family:'Oswald',sans-serif;font-weight:700">${av(p)}</span>
+        <sup style="font-size:8px;color:var(--t3)"> ${p.hcp}</sup>
+      </td>
+      ${h1.map(h=>cellN(h)).join('')}
+      <td style="font-weight:700;font-family:'Oswald',sans-serif">${oN||'—'}</td>
+      ${h2.map(h=>cellN(h)).join('')}
+      ${h2.length?`<td style="font-weight:700;font-family:'Oswald',sans-serif">${iN||'—'}</td>`:''}
+      <td style="font-weight:700;font-family:'Oswald',sans-serif">
+        ${tN||'—'}${tN?`<sup style="font-size:8px;color:var(--gold)"> ${ds}</sup>`:''}
+      </td>
+    </tr>`;
+  });
+
+  const ydsRow=`<tr class="ryds">
     <td class="${sc}">Yds</td>
-    ${h1.map(h=>`<td>${S.yds[h-1]||'—'}</td>`).join('')}
-    <td>${sumYds(h1)}</td>
-    ${h2.map(h=>`<td>${S.yds[h-1]||'—'}</td>`).join('')}
-    ${h2.length?`<td>${sumYds(h2)}</td>`:''}
+    ${h1.map(h=>`<td>${S.yds[h-1]||'—'}</td>`).join('')}<td>${sumYds(h1)}</td>
+    ${h2.map(h=>`<td>${S.yds[h-1]||'—'}</td>`).join('')}${h2.length?`<td>${sumYds(h2)}</td>`:''}
     <td>${S.yds.slice(0,S.nh).reduce((a,b)=>a+b,0)}</td>
   </tr>`;
 
-  document.getElementById('sc-tbl').innerHTML=rows;
+  // Gross table — no hcpRows, dots are on the circles directly
+  document.getElementById('sc-tbl-gross').innerHTML = hdrRow+parRow+idxRow+grossRows+ydsRow;
+  // Net table
+  document.getElementById('sc-tbl-net').innerHTML   = hdrRow+parRow+netRows;
 }
 
 /* ===== MODALIDADES ===== */
@@ -1213,10 +1628,12 @@ function renderCfgGrids(){
   });
   document.getElementById('cfg-cancha').value=S.cancha;
   document.getElementById('cfg-nh').value=S.nh;
+  document.getElementById('cfg-start').value=S.startHoyo||1;
 }
 function saveConfig(){
   S.cancha=document.getElementById('cfg-cancha').value||'Club de Polo';
   S.nh=parseInt(document.getElementById('cfg-nh').value)||18;
+  S.startHoyo=parseInt(document.getElementById('cfg-start').value)||1;
   document.getElementById('hdr-cancha').textContent=S.cancha;
   saveState(); closeModal('cfg-modal');
   renderNav(); renderEntries(); updateInf();
@@ -1230,8 +1647,142 @@ function showAlert(msg){
   setTimeout(()=>{ a.style.display='none'; },2500);
 }
 
+/* ===== ONBOARDING ===== */
+let obMods = {colombiana:true, colRot:false, dos:false, stroke:false};
+let obNh = 18, obStart = 1;
+let obPlayers = [
+  {n:'',hcp:'',col:'#1a7a3f'},
+  {n:'',hcp:'',col:'#2475b0'},
+  {n:'',hcp:'',col:'#c8a84b'},
+  {n:'',hcp:'',col:'#c0392b'},
+];
+
+function obSelectNh(n){
+  obNh=n;
+  document.getElementById('ob-nh-18').classList.toggle('sel',n===18);
+  document.getElementById('ob-nh-9').classList.toggle('sel',n===9);
+}
+function obSelectStart(h){
+  obStart=h;
+  document.getElementById('ob-start-1').classList.toggle('sel',h===1);
+  document.getElementById('ob-start-10').classList.toggle('sel',h===10);
+}
+function obToggleMod(key,el){
+  if(key==='colRot'){
+    // Sub-opción de colombiana — toggle normal
+    obMods.colRot=!obMods.colRot;
+    el.classList.toggle('on',obMods.colRot);
+    return;
+  }
+  // Modalidades principales: selección única
+  // Si ya está activa, no hacer nada (siempre debe haber una)
+  if(obMods[key]) return;
+  // Desactivar las otras
+  ['colombiana','dos','stroke'].forEach(k=>{
+    obMods[k]=false;
+    let id = k==='colombiana'?'ob-tgl-col': k==='dos'?'ob-tgl-dos':'ob-tgl-stroke';
+    let btn=document.getElementById(id);
+    if(btn) btn.classList.remove('on');
+  });
+  // Activar la seleccionada
+  obMods[key]=true;
+  el.classList.add('on');
+  // Mostrar/ocultar sub-opción rotación
+  document.getElementById('ob-rot-row').style.display=key==='colombiana'?'flex':'none';
+  if(key!=='colombiana') obMods.colRot=false;
+}
+function obAddPlayer(){
+  if(obPlayers.length>=6) return;
+  obPlayers.push({n:'',hcp:'',col:PCOLS[obPlayers.length%PCOLS.length]});
+  obRenderPlayers();
+}
+function obRemovePlayer(i){
+  if(obPlayers.length<=1) return;
+  obPlayers.splice(i,1);
+  obRenderPlayers();
+}
+function obRenderPlayers(){
+  let pl=document.getElementById('ob-players-list');
+  pl.innerHTML=obPlayers.map((p,i)=>`
+    <div class="ob-player-row">
+      <div class="ob-av" style="background:${p.col};color:#fff">${p.n?p.n.substring(0,2).toUpperCase():'?'}</div>
+      <input class="ob-inp" style="flex:1" placeholder="Nombre" value="${p.n}"
+        oninput="obPlayers[${i}].n=this.value;obUpdateAv(${i},this.value)"
+        style="flex:1;margin-right:0">
+      <input class="ob-inp-sm" type="number" min="0" max="54" placeholder="Hcp" value="${p.hcp}"
+        oninput="obPlayers[${i}].hcp=this.value">
+      ${obPlayers.length>1?`<button onclick="obRemovePlayer(${i})" style="background:none;border:none;color:rgba(255,255,255,.35);cursor:pointer;font-size:18px;padding:4px;flex-shrink:0"><i class="ti ti-trash"></i></button>`:''}
+    </div>`).join('');
+}
+function obUpdateAv(i, name){
+  let rows=document.querySelectorAll('.ob-player-row');
+  if(rows[i]){
+    let avEl=rows[i].querySelector('.ob-av');
+    if(avEl) avEl.textContent=name?name.substring(0,2).toUpperCase():'?';
+  }
+}
+function obStartRound(){
+  // Validate — need at least 1 player with name
+  let validPlayers=obPlayers.filter(p=>p.n.trim());
+  if(validPlayers.length===0){ alert('Agrega al menos un jugador'); return; }
+
+  // Build new state preserving course data
+  S.cancha = 'Club de Polo';
+  S.nh = obNh;
+  S.startHoyo = obStart;
+  S.ch = obStart;
+  S.scores = {};
+  S.bonos = {};
+  S.scView = 0;
+  S.setupDone = true;
+  S.players = validPlayers.map((p,i)=>({
+    n: p.n.trim(),
+    hcp: parseInt(p.hcp)||0,
+    col: PCOLS[i%PCOLS.length]
+  }));
+  S.mods = {...S.mods, ...obMods};
+  S.parejas = [[[-1,-1],[-1,-1]],[[-1,-1],[-1,-1]],[[-1,-1],[-1,-1]]];
+
+  saveState();
+  document.getElementById('onboarding').style.display='none';
+  document.getElementById('hdr-cancha').textContent=S.cancha;
+  updateInf(); renderNav(); renderEntries(); renderColLive(); renderDosLive();
+  renderMods(); renderPlayers(); renderParejas();
+}
+
+function initOnboarding(){
+  // Pre-fill from saved state if exists
+  if(S.players && S.players.length){
+    obPlayers = S.players.map(p=>({n:p.n,hcp:String(p.hcp),col:p.col}));
+  }
+  obNh = S.nh||18;
+  obStart = S.startHoyo||1;
+  obMods = {...S.mods};
+  // Ensure exactly one main modality is active
+  let anyOn = obMods.colombiana||obMods.dos||obMods.stroke;
+  if(!anyOn) obMods.colombiana=true;
+  // Sync UI
+  obSelectNh(obNh);
+  obSelectStart(obStart);
+  const idMap = {colombiana:'ob-tgl-col', colRot:'ob-tgl-rot', dos:'ob-tgl-dos', stroke:'ob-tgl-stroke'};
+  Object.entries(idMap).forEach(([k,id])=>{
+    let el=document.getElementById(id);
+    if(el) el.classList.toggle('on', !!obMods[k]);
+  });
+  document.getElementById('ob-rot-row').style.display=obMods.colombiana?'flex':'none';
+  obRenderPlayers();
+}
+
 /* ===== INIT ===== */
 updateInf(); renderNav(); renderEntries(); renderColLive(); renderDosLive();
+
+// Show onboarding if first time or not setup yet
+if(!S.setupDone){
+  initOnboarding();
+} else {
+  document.getElementById('onboarding').style.display='none';
+  renderMods(); renderPlayers(); renderParejas();
+}
 
 /* ===== PWA SERVICE WORKER ===== */
 if('serviceWorker' in navigator){
