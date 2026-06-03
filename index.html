@@ -42,7 +42,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--t1);displ
 .icon-btn:active{background:rgba(255,255,255,.25)}
 
 /* SCROLLABLE CONTENT */
-.screens{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding-bottom:4px}
+.screens{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding-bottom:calc(80px + env(safe-area-inset-bottom))}
 .screens::-webkit-scrollbar{display:none}
 
 /* BOTTOM TABS */
@@ -798,6 +798,8 @@ function renderEntries(){
     let grossDiff=g-par;
     let pc=diff<=-2?'pill-eagle':diff===-1?'pill-birdie':diff===0?'pill-par':diff===1?'pill-bogey':'pill-db';
     let pt=diff<=-2?`Águila ${net}`:diff===-1?`Birdie ${net}`:diff===0?`Par ${net}`:diff===1?`Bogey ${net}`:`+${diff} neto`;
+    // Solo mostrar pill neto si el jugador tiene palos de ventaja en este hoyo
+    let showPill = st > 0 && (S.mods.colombiana || S.mods.dos || S.mods.stableford);
     let bc=diff<=-2?'eagle':diff===-1?'birdie':diff===0?'par':diff===1?'bogey':'dbogey';
     let hi=st>0?`+${st} golpe${st>1?'s':''} · dif ${p.hcp-minHcp()}`:'scratch relativo';
 
@@ -834,7 +836,7 @@ function renderEntries(){
           <div class="e-name" style="color:${p.col}">${p.n}${greenieTag}</div>
           <div class="e-meta">Hcp ${p.hcp} · ${hi}</div>
         </div>
-        <span class="pill ${pc}">${pt}</span>
+        ${showPill ? `<span class="pill ${pc}">${pt}</span>` : ''}
       </div>
       <div class="sc-row">
         <button class="sc-btn m" onclick="adj(${i},-1)">−</button>
