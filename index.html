@@ -336,19 +336,29 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--t1);displ
     <!-- 4. Modalidades -->
     <div class="ob-section">
       <div class="ob-section-title"><i class="ti ti-trophy"></i>Modalidades</div>
+      <!-- COLOMBIANA -->
       <div class="ob-mod-row">
         <div>
           <div class="ob-mod-name">Colombiana</div>
           <div class="ob-mod-desc">Parejas 2 vs 2 · puntos por hoyo</div>
         </div>
-        <div class="ob-tgl on" id="ob-tgl-col" onclick="obToggleMod('colombiana',this)"></div>
+        <div class="ob-tgl" id="ob-tgl-col" onclick="obToggleMod('colombiana',this)"></div>
       </div>
-      <div class="ob-mod-row" id="ob-rot-row">
-        <div>
-          <div class="ob-mod-name" style="font-size:12px">Rotación de parejas c/6 hoyos</div>
+      <!-- Sub-bullets colombiana -->
+      <div id="ob-col-subs" style="display:none;margin-left:14px;padding-left:12px;border-left:2px solid rgba(200,168,75,.3)">
+        <div class="ob-mod-row" style="padding:8px 0">
+          <div>
+            <div class="ob-mod-name" style="font-size:12px">Rotación de parejas c/6 hoyos</div>
+          </div>
+          <div class="ob-tgl" id="ob-tgl-rot" onclick="obToggleMod('colRot',this)"></div>
         </div>
-        <div class="ob-tgl" id="ob-tgl-rot" onclick="obToggleMod('colRot',this)"></div>
+        <!-- Parejas inline -->
+        <div id="ob-parejas-section" style="display:none;padding-top:8px;border-top:1px solid rgba(255,255,255,.06)">
+          <div id="ob-parejas-content"></div>
+        </div>
       </div>
+
+      <!-- 2·0·(−2) -->
       <div class="ob-mod-row">
         <div>
           <div class="ob-mod-name">2 · 0 · −2</div>
@@ -356,12 +366,32 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--t1);displ
         </div>
         <div class="ob-tgl" id="ob-tgl-dos" onclick="obToggleMod('dos',this)"></div>
       </div>
+
+      <!-- STABLEFORD -->
       <div class="ob-mod-row">
+        <div>
+          <div class="ob-mod-name">Stableford</div>
+          <div class="ob-mod-desc">D.Águila 5 · Águila 4 · Birdie 3 · Par 2 · Bogey 1 · Doble+ 0</div>
+        </div>
+        <div class="ob-tgl" id="ob-tgl-stbl" onclick="obToggleMod('stableford',this)"></div>
+      </div>
+      <!-- Sub-bullet stableford: bruto/neto -->
+      <div id="ob-stbl-subs" style="display:none;margin-left:14px;padding-left:12px;border-left:2px solid rgba(200,168,75,.3)">
+        <div class="ob-mod-row" style="padding:8px 0">
+          <div>
+            <div class="ob-mod-name" style="font-size:12px">Usar handicap diferencial (neto)</div>
+          </div>
+          <div class="ob-tgl on" id="ob-tgl-stbl-hcp" onclick="obToggleMod('stblHcp',this)"></div>
+        </div>
+      </div>
+
+      <!-- STROKE PLAY -->
+      <div class="ob-mod-row" style="border-bottom:none">
         <div>
           <div class="ob-mod-name">Stroke Play</div>
           <div class="ob-mod-desc">Tarjeta simple · score bruto y neto</div>
         </div>
-        <div class="ob-tgl" id="ob-tgl-stroke" onclick="obToggleMod('stroke',this)"></div>
+        <div class="ob-tgl on" id="ob-tgl-stroke" onclick="obToggleMod('stroke',this)"></div>
       </div>
     </div>
 
@@ -442,6 +472,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--t1);displ
         <div id="dos-acum"></div>
       </div>
     </div>
+    <div id="stbl-live" style="display:none">
+      <div class="card">
+        <div class="card-title"><i class="ti ti-award"></i>Stableford</div>
+        <div id="stbl-acum"></div>
+      </div>
+    </div>
   </div>
 
   <!-- TARJETA -->
@@ -498,6 +534,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--t1);displ
     <div id="lb-dos-card" class="card" style="display:none">
       <div class="card-title"><i class="ti ti-arrows-exchange"></i>2 · 0 · −2</div>
       <div id="lb-dos"></div>
+    </div>
+    <div id="lb-stbl-card" class="card" style="display:none">
+      <div class="card-title"><i class="ti ti-award"></i>Stableford</div>
+      <div id="lb-stbl"></div>
     </div>
   </div>
 
@@ -620,13 +660,13 @@ const DEFAULT = {
   hdx: [11,7,15,13,5,17,1,9,3,4,10,12,18,8,6,16,2,14],
   yds: [384,567,165,406,378,201,515,376,373,389,325,529,187,427,421,198,569,455],
   players:[
-    {n:'Carlos', hcp:7,  col:'#1a7a3f'},
-    {n:'Rodrigo',hcp:15, col:'#2475b0'},
-    {n:'Felipe', hcp:10, col:'#c8a84b'},
-    {n:'Matías', hcp:18, col:'#c0392b'},
+    {n:'',hcp:0,col:'#1a7a3f'},
+    {n:'',hcp:0,col:'#2475b0'},
+    {n:'',hcp:0,col:'#c8a84b'},
+    {n:'',hcp:0,col:'#c0392b'},
   ],
   parejas:[[[-1,-1],[-1,-1]],[[-1,-1],[-1,-1]],[[-1,-1],[-1,-1]]],
-  mods:{colombiana:true,colRot:true,dos:false,stroke:true,dosHcp:true},
+  mods:{colombiana:false,colRot:false,dos:false,stroke:true,dosHcp:true,stableford:false,stblHcp:true},
   colBonos:[
     {id:'greenie',lbl:'Greenie (par en par 3)',pts:1,on:true},
     {id:'sandy',  lbl:'Sandy (par desde bunker)',pts:1,on:true},
@@ -941,7 +981,7 @@ function saveHoyo(){
   // Commit temp scores to saved scores
   S.scores[h]=[...tempScores[h]];
   saveState();
-  renderColLive(); renderDosLive(); renderNav();
+  renderColLive(); renderDosLive(); renderStblLive(); renderStblLive(); renderNav();
 
   // Show colombiana breakdown if active
   if(S.mods.colombiana){
@@ -1283,7 +1323,48 @@ function renderDosLive(){
     </div>`).join('');
 }
 
-/* ===== TARJETA — Gross + Neto ===== */
+function renderStblLive(){
+  let sl=document.getElementById('stbl-live');
+  if(!S.mods.stableford){sl.style.display='none';return;}
+  sl.style.display='block';
+  let results=calcStableford().sort((a,b)=>b.pts-a.pts);
+  document.getElementById('stbl-acum').innerHTML=results.map((p,pos)=>`
+    <div class="live-item ${pos===0&&p.pts>0?'top':''}">
+      <div style="font-family:'Oswald',sans-serif;font-size:15px;font-weight:700;color:${pos===0&&p.pts>0?'rgba(255,255,255,.4)':'var(--t3)'};width:20px">${pos+1}</div>
+      <div class="live-av" style="background:${p.col};color:#fff">${av(p)}</div>
+      <div style="flex:1">
+        <div style="font-family:'Oswald',sans-serif;font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;color:${pos===0&&p.pts>0?'var(--gold)':p.col}">${p.n}</div>
+        <div style="font-size:10px;color:${pos===0&&p.pts>0?'rgba(255,255,255,.45)':'var(--t3)'}">Hcp ${p.hcp} · ${S.mods.stblHcp?'neto':'bruto'}</div>
+      </div>
+      <div class="live-pts">${p.pts}</div>
+    </div>`).join('');
+}
+function stblPts(diff){
+  // diff = score vs par (negative = under par)
+  if(diff<=-4) return 5; // double eagle or better
+  if(diff===-3) return 5;
+  if(diff===-2) return 4; // eagle
+  if(diff===-1) return 3; // birdie
+  if(diff===0)  return 2; // par
+  if(diff===1)  return 1; // bogey
+  return 0;               // double bogey or worse
+}
+
+function calcStableford(){
+  return S.players.map((p,pi)=>{
+    let pts=0, hoyos=[];
+    for(let h=1;h<=S.nh;h++){
+      if(!S.scores[h]) continue;
+      let g=S.scores[h][pi];
+      let score = S.mods.stblHcp ? g-hcpS(pi,h) : g;
+      let diff = score - S.pars[h-1];
+      let p2 = stblPts(diff);
+      pts += p2;
+      hoyos.push({h, gross:g, net:score, diff, pts:p2});
+    }
+    return {...p, pi, pts, hoyos};
+  });
+}
 function ccls(d){ return d<=-2?'ce':d===-1?'cb':d===0?'cp':d===1?'cbo':'cdb'; }
 
 function renderTarjeta(){
@@ -1456,10 +1537,12 @@ function renderMods(){
   let dosOpts=`<div class="opt-row"><span style="font-size:12px;color:var(--t2)">Usar handicap diferencial</span><div class="tgl ${S.mods.dosHcp?'on':''}" onclick="togOpt('dosHcp',event)"></div></div>`;
   ml.innerHTML=mkMod('colombiana','ti-star','Colombiana','Pts individuales. Parejas 2 vs 2.',colOpts)+
                mkMod('dos','ti-arrows-exchange','2 · 0 · −2','3 jugadores. Mejor +2, 2° = 0, 3° −2.',dosOpts)+
-               mkMod('stroke','ti-flag','Stroke Play','Tarjeta simple. Score bruto y neto.');
+               mkMod('stroke','ti-flag','Stroke Play','Tarjeta simple. Score bruto y neto.')+
+               mkMod('stableford','ti-award','Stableford','D.Águila 5 · Águila 4 · Birdie 3 · Par 2 · Bogey 1 · Doble+ 0',
+                `<div style="display:flex;align-items:center;justify-content:space-between"><span style="font-size:12px;color:var(--t2)">Usar handicap diferencial (neto)</span><div class="tgl ${S.mods.stblHcp?'on':''}" onclick="togOpt('stblHcp',event)"></div></div>`);
   renderParejas();
 }
-function togMod(id,e){ if(e.target.classList.contains('tgl')||e.target.tagName==='INPUT') return; S.mods[id]=!S.mods[id]; saveState(); renderMods(); renderColLive(); renderDosLive(); }
+function togMod(id,e){ if(e.target.classList.contains('tgl')||e.target.tagName==='INPUT') return; S.mods[id]=!S.mods[id]; saveState(); renderMods(); renderColLive(); renderDosLive(); renderStblLive(); renderStblLive(); }
 function togOpt(k,e){ e.stopPropagation(); S.mods[k]=!S.mods[k]; saveState(); renderMods(); renderColLive(); }
 function togBono(i,e){ e.stopPropagation(); S.colBonos[i].on=!S.colBonos[i].on; saveState(); renderMods(); }
 
@@ -1608,13 +1691,47 @@ function renderRanking(){
     }).join('');
   }
   let dc=document.getElementById('lb-dos-card');
-  if(!S.mods.dos||S.players.length<3){ dc.style.display='none'; return; }
-  dc.style.display='block';
-  let{acum:da,rows:dr}=calcDos();
-  let aRow=S.players.slice(0,3).map((p,i)=>`<div style="text-align:center"><div style="font-size:10px;color:rgba(255,255,255,.45);font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.3px">${p.n}</div><div style="font-family:'Oswald',sans-serif;font-size:32px;font-weight:700;color:var(--gold)">${da[i]>0?'+':''}${da[i]}</div></div>`).join('');
-  let dh=`<div style="display:grid;grid-template-columns:repeat(3,1fr);background:var(--navy);border-radius:8px;padding:12px;margin-bottom:10px">${aRow}</div>`;
-  dh+=dr.map(r=>{ let cells=S.players.slice(0,3).map((_,i)=>r.pts[i]!==null?`<span style="font-weight:700;font-family:'Oswald',sans-serif;font-size:13px;color:${r.pts[i]>0?'var(--green)':r.pts[i]<0?'var(--red)':'var(--t3)'}">${r.pts[i]>0?'+':''}${r.pts[i]}</span>`:'—').join(' · '); return `<div style="display:flex;justify-content:space-between;align-items:center;padding:7px 8px;background:${r.h%2?'var(--bg)':'var(--card)'};border-radius:6px;margin-bottom:3px;font-size:11px"><span style="color:var(--t3);font-family:'Oswald',sans-serif">H${r.h} P${r.par}</span><span>${cells}</span></div>`; }).join('');
-  document.getElementById('lb-dos').innerHTML=dh;
+  if(!S.mods.dos||S.players.length<3){ dc.style.display='none'; }
+  else {
+    dc.style.display='block';
+    let{acum:da,rows:dr}=calcDos();
+    let aRow=S.players.slice(0,3).map((p,i)=>`<div style="text-align:center"><div style="font-size:10px;color:rgba(255,255,255,.45);font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.3px">${p.n}</div><div style="font-family:'Oswald',sans-serif;font-size:32px;font-weight:700;color:var(--gold)">${da[i]>0?'+':''}${da[i]}</div></div>`).join('');
+    let dh=`<div style="display:grid;grid-template-columns:repeat(3,1fr);background:var(--navy);border-radius:8px;padding:12px;margin-bottom:10px">${aRow}</div>`;
+    dh+=dr.map(r=>{ let cells=S.players.slice(0,3).map((_,i)=>r.pts[i]!==null?`<span style="font-weight:700;font-family:'Oswald',sans-serif;font-size:13px;color:${r.pts[i]>0?'var(--green)':r.pts[i]<0?'var(--red)':'var(--t3)'}">${r.pts[i]>0?'+':''}${r.pts[i]}</span>`:'—').join(' · '); return `<div style="display:flex;justify-content:space-between;align-items:center;padding:7px 8px;background:${r.h%2?'var(--bg)':'var(--card)'};border-radius:6px;margin-bottom:3px;font-size:11px"><span style="color:var(--t3);font-family:'Oswald',sans-serif">H${r.h} P${r.par}</span><span>${cells}</span></div>`; }).join('');
+    document.getElementById('lb-dos').innerHTML=dh;
+  }
+
+  // Stableford ranking
+  let sc2=document.getElementById('lb-stbl-card');
+  if(!S.mods.stableford){ sc2.style.display='none'; return; }
+  sc2.style.display='block';
+  let stblResults=calcStableford().sort((a,b)=>b.pts-a.pts);
+  let stblHtml=stblResults.map((p,pos)=>{
+    let ptsLabel=S.mods.stblHcp?'neto':'bruto';
+    return `<div class="lb-row ${pos===0&&p.pts>0?'gold':''}">
+      <div class="lb-pos">${pos+1}</div>
+      <div class="lb-av" style="background:${p.col};color:#fff">${av(p)}</div>
+      <div style="flex:1"><div class="lb-n">${p.n}</div><div class="lb-meta">Hcp ${p.hcp} · ${ptsLabel}</div></div>
+      <div style="text-align:right"><div class="lb-sc">${p.pts}</div><div style="font-size:10px;color:var(--t3)">pts</div></div>
+    </div>`;
+  }).join('');
+  // Hoyo por hoyo
+  stblHtml+=`<div class="divider"></div>`;
+  let playOrder=getPlayOrder();
+  playOrder.forEach(h=>{
+    if(!S.scores[h]) return;
+    let row=`<div style="display:flex;gap:6px;align-items:center;padding:5px 8px;background:${h%2?'var(--bg)':'var(--card)'};border-radius:6px;margin-bottom:3px;font-size:11px">
+      <span style="color:var(--t3);font-family:'Oswald',sans-serif;min-width:40px">H${h} P${S.pars[h-1]}</span>
+      ${stblResults.map(p=>{
+        let hd=p.hoyos.find(x=>x.h===h);
+        if(!hd) return '<span style="color:var(--b2);min-width:24px;text-align:center">—</span>';
+        let col=hd.pts>=3?'var(--green)':hd.pts===2?'var(--t2)':hd.pts===1?'var(--t3)':'var(--red)';
+        return `<span style="font-weight:700;color:${col};min-width:24px;text-align:center;font-family:'Oswald',sans-serif">${hd.pts}</span>`;
+      }).join('')}
+    </div>`;
+    stblHtml+=row;
+  });
+  document.getElementById('lb-stbl').innerHTML=stblHtml;
 }
 
 /* ===== CONFIG ===== */
@@ -1648,7 +1765,7 @@ function showAlert(msg){
 }
 
 /* ===== ONBOARDING ===== */
-let obMods = {colombiana:true, colRot:false, dos:false, stroke:false};
+let obMods = {colombiana:false, colRot:false, dos:false, stroke:true, stableford:false, stblHcp:true};
 let obNh = 18, obStart = 1;
 let obPlayers = [
   {n:'',hcp:'',col:'#1a7a3f'},
@@ -1668,31 +1785,119 @@ function obSelectStart(h){
   document.getElementById('ob-start-10').classList.toggle('sel',h===10);
 }
 function obToggleMod(key,el){
+  // Sub-options: toggle independently
   if(key==='colRot'){
-    // Sub-opción de colombiana — toggle normal
     obMods.colRot=!obMods.colRot;
     el.classList.toggle('on',obMods.colRot);
+    // Show/hide parejas
+    document.getElementById('ob-parejas-section').style.display=obMods.colombiana?'block':'none';
+    obRenderParejas();
     return;
   }
-  // Modalidades principales: selección única
-  // Si ya está activa, no hacer nada (siempre debe haber una)
+  if(key==='stblHcp'){
+    obMods.stblHcp=!obMods.stblHcp;
+    el.classList.toggle('on',obMods.stblHcp);
+    return;
+  }
+
+  // Main modalities: single select
   if(obMods[key]) return;
-  // Desactivar las otras
-  ['colombiana','dos','stroke'].forEach(k=>{
+  ['colombiana','dos','stroke','stableford'].forEach(k=>{
     obMods[k]=false;
-    let id = k==='colombiana'?'ob-tgl-col': k==='dos'?'ob-tgl-dos':'ob-tgl-stroke';
-    let btn=document.getElementById(id);
+    const idMap={colombiana:'ob-tgl-col',dos:'ob-tgl-dos',stroke:'ob-tgl-stroke',stableford:'ob-tgl-stbl'};
+    let btn=document.getElementById(idMap[k]);
     if(btn) btn.classList.remove('on');
   });
-  // Activar la seleccionada
   obMods[key]=true;
   el.classList.add('on');
-  // Mostrar/ocultar sub-opción rotación
-  document.getElementById('ob-rot-row').style.display=key==='colombiana'?'flex':'none';
-  if(key!=='colombiana') obMods.colRot=false;
+
+  // Show/hide sub-sections
+  let isCol=key==='colombiana';
+  let isStbl=key==='stableford';
+  document.getElementById('ob-col-subs').style.display=isCol?'block':'none';
+  document.getElementById('ob-stbl-subs').style.display=isStbl?'block':'none';
+  if(!isCol){ obMods.colRot=false; document.getElementById('ob-tgl-rot').classList.remove('on'); }
+  if(isCol) obRenderParejas();
 }
+function obRenderParejas(){
+  let sec=document.getElementById('ob-parejas-content');
+  if(!sec) return;
+  let nr=obMods.colRot?3:1;
+  let html='';
+
+  for(let r=0;r<nr;r++){
+    // R3 con rotación: auto
+    if(r===2&&obMods.colRot){
+      let r1ok=obPairOk(0), r2ok=obPairOk(1);
+      html+=`<div style="margin-bottom:10px">
+        <div style="font-size:10px;color:var(--gold);font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">
+          Ronda 3 · H13–18 <span style="font-size:9px;color:rgba(255,255,255,.3)">(se calcula sola)</span>
+        </div>`;
+      if(r1ok&&r2ok){
+        calcR3();
+        let pA=S.parejas[2][0], pB=S.parejas[2][1];
+        if(pA&&pB&&isV(pA[0])&&isV(pB[0])){
+          html+=`<div style="font-size:12px;color:rgba(255,255,255,.6);padding:8px 10px;background:rgba(255,255,255,.05);border-radius:6px">
+            ${pA.map(i=>S.players[i]?.n||'?').join(' & ')} vs ${pB.map(i=>S.players[i]?.n||'?').join(' & ')}
+          </div>`;
+        }
+      } else {
+        html+=`<div style="font-size:11px;color:rgba(255,255,255,.3);padding:8px 10px;background:rgba(255,255,255,.04);border-radius:6px;text-align:center">
+          <i class="ti ti-clock" style="font-size:14px;vertical-align:-2px"></i> Completa R1 y R2
+        </div>`;
+      }
+      html+='</div>';
+      continue;
+    }
+
+    let label=obMods.colRot?`Ronda ${r+1} · H${r*6+1}–${r*6+6}`:`Parejas`;
+    let pair=S.parejas[r];
+    let ok=obPairOk(r);
+
+    html+=`<div style="margin-bottom:12px">
+      <div style="font-size:10px;color:var(--gold);font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">${label}</div>
+      <div style="display:grid;grid-template-columns:1fr 32px 1fr;gap:8px;align-items:start">
+        ${(()=>{
+          let pA = `<div style="background:rgba(255,255,255,.06);border-radius:8px;padding:10px;border:1px solid ${rOk(r)?'rgba(200,168,75,.3)':'rgba(255,255,255,.08)'}">
+            <div style="font-size:9px;color:rgba(255,255,255,.4);font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px">Pareja A</div>
+            ${[0,1].map(s=>{
+              let av2=avail(r,0,s); let cur=pair[0][s];
+              return `<select onchange="onSelP(${r},0,${s},parseInt(this.value));obRenderParejas()"
+                style="width:100%;margin-bottom:4px;padding:7px 6px;border-radius:6px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.08);color:${isV(cur)?'#fff':'rgba(255,255,255,.4)'};font-family:'DM Sans',sans-serif;font-size:12px;appearance:none">
+                ${!isV(cur)?'<option value="-1" disabled selected>— elige —</option>':''}
+                ${av2.map(i=>`<option value="${i}" ${cur===i?'selected':''} style="background:#0a2c4d;color:#fff">${S.players[i]?.n} (${S.players[i]?.hcp})</option>`).join('')}
+              </select>`;
+            }).join('')}
+          </div>`;
+          let isAuto = pairOk(pair[0]);
+          let pB = `<div style="background:rgba(255,255,255,.06);border-radius:8px;padding:10px;border:1px solid ${isAuto?'rgba(200,168,75,.3)':'rgba(255,255,255,.08)'}">
+            <div style="font-size:9px;color:rgba(255,255,255,.4);font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px">Pareja B${isAuto?' <span style="color:var(--gold);font-size:8px">AUTO</span>':''}</div>
+            ${[0,1].map(s=>{
+              let cur=pair[1][s];
+              if(isAuto) return `<div style="padding:7px 8px;background:rgba(255,255,255,.05);border-radius:6px;margin-bottom:4px;font-size:12px;color:rgba(255,255,255,.7);font-family:'Oswald',sans-serif">${isV(cur)&&S.players[cur]?S.players[cur].n:'—'}</div>`;
+              let av2=avail(r,1,s);
+              return `<select onchange="onSelP(${r},1,${s},parseInt(this.value));obRenderParejas()"
+                style="width:100%;margin-bottom:4px;padding:7px 6px;border-radius:6px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.08);color:${isV(cur)?'#fff':'rgba(255,255,255,.4)'};font-family:'DM Sans',sans-serif;font-size:12px;appearance:none">
+                ${!isV(cur)?'<option value="-1" disabled selected>— elige —</option>':''}
+                ${av2.map(i=>`<option value="${i}" ${cur===i?'selected':''} style="background:#0a2c4d;color:#fff">${S.players[i]?.n} (${S.players[i]?.hcp})</option>`).join('')}
+              </select>`;
+            }).join('')}
+          </div>`;
+          let vs = `<div style="display:flex;align-items:center;justify-content:center;padding-top:26px;font-family:'Oswald',sans-serif;font-size:13px;font-weight:700;color:var(--red)">VS</div>`;
+          return pA + vs + pB;
+        })()}
+      </div>
+      ${ok?`<div style="font-size:11px;color:rgba(255,255,255,.5);margin-top:6px;padding:6px 8px;background:rgba(255,255,255,.05);border-radius:6px;font-family:'Oswald',sans-serif">
+        ✓ ${pair[0].map(i=>S.players[i]?.n).join(' & ')} vs ${pair[1].map(i=>S.players[i]?.n).join(' & ')}
+      </div>`:''}
+    </div>`;
+  }
+  sec.innerHTML=html;
+}
+
+function obPairOk(r){ return rOk(r); }
+
 function obAddPlayer(){
-  if(obPlayers.length>=6) return;
   obPlayers.push({n:'',hcp:'',col:PCOLS[obPlayers.length%PCOLS.length]});
   obRenderPlayers();
 }
@@ -1706,13 +1911,22 @@ function obRenderPlayers(){
   pl.innerHTML=obPlayers.map((p,i)=>`
     <div class="ob-player-row">
       <div class="ob-av" style="background:${p.col};color:#fff">${p.n?p.n.substring(0,2).toUpperCase():'?'}</div>
-      <input class="ob-inp" style="flex:1" placeholder="Nombre" value="${p.n}"
-        oninput="obPlayers[${i}].n=this.value;obUpdateAv(${i},this.value)"
-        style="flex:1;margin-right:0">
+      <input class="ob-inp" placeholder="Nombre" value="${p.n}"
+        oninput="obPlayers[${i}].n=this.value;obUpdateAv(${i},this.value);obSyncPlayers()"
+        style="flex:1">
       <input class="ob-inp-sm" type="number" min="0" max="54" placeholder="Hcp" value="${p.hcp}"
         oninput="obPlayers[${i}].hcp=this.value">
       ${obPlayers.length>1?`<button onclick="obRemovePlayer(${i})" style="background:none;border:none;color:rgba(255,255,255,.35);cursor:pointer;font-size:18px;padding:4px;flex-shrink:0"><i class="ti ti-trash"></i></button>`:''}
     </div>`).join('');
+}
+
+function obSyncPlayers(){
+  // Keep S.players in sync so parejas selects work
+  let valid=obPlayers.filter(p=>p.n.trim());
+  if(valid.length>0){
+    S.players=valid.map((p,i)=>({n:p.n.trim(),hcp:parseInt(p.hcp)||0,col:PCOLS[i%PCOLS.length]}));
+  }
+  if(obMods.colombiana) obRenderParejas();
 }
 function obUpdateAv(i, name){
   let rows=document.querySelectorAll('.ob-player-row');
@@ -1746,35 +1960,46 @@ function obStartRound(){
   saveState();
   document.getElementById('onboarding').style.display='none';
   document.getElementById('hdr-cancha').textContent=S.cancha;
-  updateInf(); renderNav(); renderEntries(); renderColLive(); renderDosLive();
+  updateInf(); renderNav(); renderEntries(); renderColLive(); renderDosLive(); renderStblLive();
   renderMods(); renderPlayers(); renderParejas();
 }
 
 function initOnboarding(){
-  // Pre-fill from saved state if exists
-  if(S.players && S.players.length){
+  // Pre-fill from saved state only if players have actual names
+  if(S.players && S.players.length && S.players.some(p=>p.n.trim())){
     obPlayers = S.players.map(p=>({n:p.n,hcp:String(p.hcp),col:p.col}));
+  } else {
+    obPlayers = [
+      {n:'',hcp:'',col:'#1a7a3f'},
+      {n:'',hcp:'',col:'#2475b0'},
+      {n:'',hcp:'',col:'#c8a84b'},
+      {n:'',hcp:'',col:'#c0392b'},
+    ];
   }
   obNh = S.nh||18;
   obStart = S.startHoyo||1;
   obMods = {...S.mods};
   // Ensure exactly one main modality is active
-  let anyOn = obMods.colombiana||obMods.dos||obMods.stroke;
-  if(!anyOn) obMods.colombiana=true;
+  let anyOn = obMods.colombiana||obMods.dos||obMods.stroke||obMods.stableford;
+  if(!anyOn) obMods.stroke=true;
   // Sync UI
   obSelectNh(obNh);
   obSelectStart(obStart);
-  const idMap = {colombiana:'ob-tgl-col', colRot:'ob-tgl-rot', dos:'ob-tgl-dos', stroke:'ob-tgl-stroke'};
+  const idMap = {colombiana:'ob-tgl-col', colRot:'ob-tgl-rot', dos:'ob-tgl-dos', stroke:'ob-tgl-stroke', stableford:'ob-tgl-stbl', stblHcp:'ob-tgl-stbl-hcp'};
   Object.entries(idMap).forEach(([k,id])=>{
     let el=document.getElementById(id);
     if(el) el.classList.toggle('on', !!obMods[k]);
   });
-  document.getElementById('ob-rot-row').style.display=obMods.colombiana?'flex':'none';
+  document.getElementById('ob-col-subs').style.display=obMods.colombiana?'block':'none';
+  document.getElementById('ob-stbl-subs').style.display=obMods.stableford?'block':'none';
+  let pSec=document.getElementById('ob-parejas-section');
+  if(pSec) pSec.style.display=obMods.colombiana?'block':'none';
+  if(obMods.colombiana) obRenderParejas();
   obRenderPlayers();
 }
 
 /* ===== INIT ===== */
-updateInf(); renderNav(); renderEntries(); renderColLive(); renderDosLive();
+updateInf(); renderNav(); renderEntries(); renderColLive(); renderDosLive(); renderStblLive();
 
 // Show onboarding if first time or not setup yet
 if(!S.setupDone){
