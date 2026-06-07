@@ -72,7 +72,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--t1);displ
 .hn-btn{aspect-ratio:1;border-radius:6px;border:1.5px solid var(--b2);background:var(--bg);font-family:'Oswald',sans-serif;font-size:12px;font-weight:600;color:var(--t2);cursor:pointer;display:flex;align-items:center;justify-content:center;min-height:34px;transition:.1s}
 .hn-btn:active{transform:scale(.92)}
 .hn-btn.done{background:var(--gxl);border-color:#a3c8a8;color:var(--green)}
-.hn-btn.sel{background:var(--navy);color:#fff;border-color:var(--navy)}
+.hn-btn.sel{background:var(--red);color:#fff;border-color:var(--red);transform:scale(1.12);box-shadow:0 2px 8px rgba(216,35,42,.35);z-index:1;position:relative;font-size:13px}
 
 /* ENTRIES */
 .entry-block{border-radius:10px;padding:12px 14px;margin-bottom:8px;border-left:4px solid var(--b2);background:var(--bg)}
@@ -142,9 +142,14 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--t1);displ
 .sc-tbl .rsub td.sc{background:var(--navy2);color:var(--gold)}
 .sc-tbl .rtot td{background:var(--navy);color:#fff;font-weight:700;font-family:'Oswald',sans-serif;font-size:11px}
 .sc-tbl .rtot td.sc{background:var(--navy);color:var(--gold)}
-.circ{width:24px;height:24px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;margin:0 auto;font-family:'Oswald',sans-serif}
-.ce{background:var(--gold);color:#fff}.cb{background:var(--green);color:#fff}
-.cp{background:#888;color:#fff}.cbo{background:var(--navy2);color:#fff}.cdb{background:var(--red);color:#fff}
+/* .circ replaced by .sc-cell */
+/* Scorecard symbols — PGA standard */
+.sc-cell{display:inline-flex;align-items:center;justify-content:center;font-family:'Oswald',sans-serif;font-size:12px;font-weight:700;width:26px;height:26px;line-height:1}
+.sc-eagle{border-radius:50%;border:2px solid var(--navy);outline:2px solid var(--navy);outline-offset:2px;color:var(--navy)} /* double circle */
+.sc-birdie{border-radius:50%;border:2px solid var(--navy);color:var(--navy)} /* single circle */
+.sc-par{color:var(--t2)} /* plain number */
+.sc-bogey{border:2px solid var(--navy);border-radius:2px;color:var(--navy)} /* single square */
+.sc-dbogey{border:2px solid var(--navy);border-radius:2px;outline:2px solid var(--navy);outline-offset:2px;color:var(--navy)} /* double square */
 .p-tabs{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px}
 .p-tab-btn{padding:7px 12px;border-radius:6px;border:2px solid;font-family:'Oswald',sans-serif;font-size:12px;font-weight:700;cursor:pointer;letter-spacing:.3px;text-transform:uppercase}
 .legend{display:flex;flex-wrap:wrap;gap:8px;padding:8px 0 2px;justify-content:center}
@@ -486,17 +491,29 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--t1);displ
       <div class="card-title"><i class="ti ti-clipboard-list"></i>Scorecard</div>
       <div id="player-tabs" style="display:none"></div>
 
-      <div style="font-size:11px;font-weight:700;color:var(--navy);font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px">Score Bruto</div>
-      <div class="sc-scroll"><table class="sc-tbl" id="sc-tbl-gross"></table></div>
-
-      <div style="font-size:11px;font-weight:700;color:var(--navy);font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.6px;margin:14px 0 6px">Score Neto</div>
-      <div class="sc-scroll"><table class="sc-tbl" id="sc-tbl-net"></table></div>
+      <!-- Gross / Neto toggle -->
+      <div style="display:flex;gap:0;margin-bottom:12px;border-radius:8px;overflow:hidden;border:1.5px solid var(--navy)">
+        <button id="sc-tab-gross" onclick="setSCView('gross')"
+          style="flex:1;height:36px;border:none;background:var(--navy);color:#fff;font-family:'Oswald',sans-serif;font-size:13px;font-weight:700;cursor:pointer;letter-spacing:.5px;text-transform:uppercase">
+          Gross
+        </button>
+        <button id="sc-tab-net" onclick="setSCView('net')"
+          style="flex:1;height:36px;border:none;background:transparent;color:var(--navy);font-family:'Oswald',sans-serif;font-size:13px;font-weight:700;cursor:pointer;letter-spacing:.5px;text-transform:uppercase">
+          Neto
+        </button>
+      </div>
+      <div id="sc-view-gross">
+        <div class="sc-scroll"><table class="sc-tbl" id="sc-tbl-gross"></table></div>
+      </div>
+      <div id="sc-view-net" style="display:none">
+        <div class="sc-scroll"><table class="sc-tbl" id="sc-tbl-net"></table></div>
+      </div>
       <div class="legend" style="margin-top:8px">
-        <div class="leg-item"><div class="circ ce" style="width:16px;height:16px;font-size:8px">•</div>Águila</div>
-        <div class="leg-item"><div class="circ cb" style="width:16px;height:16px;font-size:8px">•</div>Birdie</div>
-        <div class="leg-item"><div class="circ cp" style="width:16px;height:16px;font-size:8px">•</div>Par</div>
-        <div class="leg-item"><div class="circ cbo" style="width:16px;height:16px;font-size:8px">•</div>Bogey</div>
-        <div class="leg-item"><div class="circ cdb" style="width:16px;height:16px;font-size:8px">•</div>Doble+</div>
+        <div class="leg-item"><div class="sc-cell sc-eagle" style="width:18px;height:18px;font-size:9px">•</div>Águila</div>
+        <div class="leg-item"><div class="sc-cell sc-birdie" style="width:18px;height:18px;font-size:9px">•</div>Birdie</div>
+        <div class="leg-item"><div class="sc-cell sc-par" style="width:18px;height:18px;font-size:9px">4</div>Par</div>
+        <div class="leg-item"><div class="sc-cell sc-bogey" style="width:18px;height:18px;font-size:9px">•</div>Bogey</div>
+        <div class="leg-item"><div class="sc-cell sc-dbogey" style="width:18px;height:18px;font-size:9px">•</div>Doble+</div>
       </div>
     </div>
   </div>
@@ -549,6 +566,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--t1);displ
   <button class="tab" onclick="goTab('tarjeta')"><i class="ti ti-clipboard-list"></i>Tarjeta</button>
   <button class="tab" onclick="goTab('mods')"><i class="ti ti-settings-2"></i>Mods</button>
   <button class="tab" onclick="goTab('ranking')"><i class="ti ti-list-numbers"></i>Ranking</button>
+  <button class="tab" onclick="showResumen()" style="color:var(--gold)"><i class="ti ti-flag-check"></i>Final</button>
 </nav>
 
 </div><!-- end app -->
@@ -583,6 +601,32 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--t1);displ
       <button class="btn btn-save" onclick="saveConfig()" style="flex:1"><i class="ti ti-check"></i> Guardar</button>
       <button class="btn btn-outline" onclick="closeModal('cfg-modal')" style="width:46px;padding:0"><i class="ti ti-x"></i></button>
     </div>
+  </div>
+</div>
+
+<!-- RESUMEN FINAL -->
+<div id="resumen-overlay" style="display:none;position:fixed;inset:0;z-index:600;background:var(--navy);overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:env(safe-area-inset-bottom)">
+  <div style="max-width:480px;margin:0 auto;padding:20px 16px 32px">
+
+    <!-- Header -->
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+      <div>
+        <div style="font-family:'Graduate',serif;font-size:24px;color:#fff;letter-spacing:2px">FORE<span style="color:var(--red)">!</span></div>
+        <div style="font-family:'Oswald',sans-serif;font-size:11px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:1.5px" id="res-cancha-fecha"></div>
+      </div>
+      <button onclick="closeResumen()" style="background:rgba(255,255,255,.1);border:none;color:#fff;width:38px;height:38px;border-radius:50%;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center">
+        <i class="ti ti-x"></i>
+      </button>
+    </div>
+
+    <!-- Content injected here -->
+    <div id="resumen-content"></div>
+
+    <!-- Export button -->
+    <button onclick="exportResumen()" style="width:100%;height:52px;margin-top:16px;border-radius:12px;border:none;background:linear-gradient(135deg,var(--gold),#a07a20);color:#fff;font-family:'Oswald',sans-serif;font-size:16px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;letter-spacing:.5px;text-transform:uppercase">
+      <i class="ti ti-camera"></i> Guardar imagen
+    </button>
+
   </div>
 </div>
 
@@ -1367,7 +1411,7 @@ function calcStableford(){
     return {...p, pi, pts, hoyos};
   });
 }
-function ccls(d){ return d<=-2?'ce':d===-1?'cb':d===0?'cp':d===1?'cbo':'cdb'; }
+function ccls(d){ return d<=-2?'sc-cell sc-eagle':d===-1?'sc-cell sc-birdie':d===0?'sc-cell sc-par':d===1?'sc-cell sc-bogey':'sc-cell sc-dbogey'; }
 
 function renderTarjeta(){
   document.getElementById('player-tabs').innerHTML='';
@@ -1451,31 +1495,31 @@ function renderTarjeta(){
         : strks>=2
         ? `<span style="position:absolute;top:-5px;right:-5px;font-size:7px;color:#111;line-height:1;font-weight:700">••</span>`
         : '';
-      return `<td><div style="position:relative;display:inline-block">${dotSpan}<div class="circ ${ccls(gd)}">${g}</div></div></td>`;
+      return `<td><div style="position:relative;display:inline-block">${dotSpan}<div class="${ccls(gd)}">${g}</div></div></td>`;
     };
 
     h1.forEach(h=>{ if(S.scores[h]) oG+=S.scores[h][pi]; });
     h2.forEach(h=>{ if(S.scores[h]) iG+=S.scores[h][pi]; });
     let tG=oG+iG;
-    let gds=tG?(tG-S.pars.slice(0,S.nh).reduce((a,b)=>a+b,0)):null;
+    let playedPar = h1.concat(h2).filter(h=>S.scores[h]).reduce((s,h)=>s+S.pars[h-1],0);
+    let gds=tG&&playedPar?(tG-playedPar):null;
     let gdsStr=gds===null?'':gds===0?'E':gds>0?'+'+gds:''+gds;
+
+
 
     grossRows+=`<tr>
       <td class="${sc}" style="color:${p.col}">
         <span style="font-family:'Oswald',sans-serif;font-weight:700">${av(p)}</span>
-        ${diff>0?`<sup style="font-size:8px;color:var(--t3)"> +${diff}</sup>`:''}
+        ${gdsStr?`<span style="font-size:11px;font-weight:700;font-family:'Oswald',sans-serif;color:${gds<0?'var(--green)':gds===0?'var(--t3)':'var(--red)'}"> ${gdsStr}</span>`:''}
       </td>
       ${h1.map(h=>cell(h)).join('')}
       <td style="font-weight:700;font-family:'Oswald',sans-serif">${oG||'—'}</td>
       ${h2.map(h=>cell(h)).join('')}
       ${h2.length?`<td style="font-weight:700;font-family:'Oswald',sans-serif">${iG||'—'}</td>`:''}
-      <td style="font-weight:700;font-family:'Oswald',sans-serif">
-        ${tG||'—'}${gdsStr?`<sup style="font-size:8px;color:var(--t3)"> ${gdsStr}</sup>`:''}
-      </td>
+      <td style="font-weight:700;font-family:'Oswald',sans-serif">${tG||'—'}</td>
     </tr>`;
   });
 
-  // ── NET table ────────────────────────────────────
   let netRows='';
   S.players.forEach((p,pi)=>{
     let oN=0, iN=0;
@@ -1483,24 +1527,23 @@ function renderTarjeta(){
       let sc2=S.scores[h];
       if(!sc2) return `<td></td>`;
       let g=sc2[pi], strks=hcpS(pi,h), net=g-strks, d=net-S.pars[h-1];
-      return `<td><div class="circ ${ccls(d)}">${net}</div></td>`;
+      return `<td><div class="${ccls(d)}">${net}</div></td>`;
     };
     h1.forEach(h=>{ if(S.scores[h]) oN+=S.scores[h][pi]-hcpS(pi,h); });
     h2.forEach(h=>{ if(S.scores[h]) iN+=S.scores[h][pi]-hcpS(pi,h); });
-    let tN=oN+iN, tP=S.pars.slice(0,S.nh).reduce((a,b)=>a+b,0);
+    let tN=oN+iN, tP=h1.concat(h2).filter(h=>S.scores[h]).reduce((s,h)=>s+S.pars[h-1],0);
     let df=tN-tP, ds=df===0?'E':df>0?'+'+df:''+df;
+
     netRows+=`<tr>
       <td class="${sc}" style="color:${p.col}">
         <span style="font-family:'Oswald',sans-serif;font-weight:700">${av(p)}</span>
-        <sup style="font-size:8px;color:var(--t3)"> ${p.hcp}</sup>
+        ${tN&&tP?`<span style="font-size:11px;font-weight:700;font-family:'Oswald',sans-serif;color:${df<0?'var(--green)':df===0?'var(--t3)':'var(--red)'}"> ${ds}</span>`:''}
       </td>
       ${h1.map(h=>cellN(h)).join('')}
       <td style="font-weight:700;font-family:'Oswald',sans-serif">${oN||'—'}</td>
       ${h2.map(h=>cellN(h)).join('')}
       ${h2.length?`<td style="font-weight:700;font-family:'Oswald',sans-serif">${iN||'—'}</td>`:''}
-      <td style="font-weight:700;font-family:'Oswald',sans-serif">
-        ${tN||'—'}${tN?`<sup style="font-size:8px;color:var(--gold)"> ${ds}</sup>`:''}
-      </td>
+      <td style="font-weight:700;font-family:'Oswald',sans-serif">${tN||'—'}</td>
     </tr>`;
   });
 
@@ -1957,7 +2000,8 @@ function obStartRound(){
     col: PCOLS[i%PCOLS.length]
   }));
   S.mods = {...S.mods, ...obMods};
-  S.parejas = [[[-1,-1],[-1,-1]],[[-1,-1],[-1,-1]],[[-1,-1],[-1,-1]]];
+  // Keep parejas as configured in onboarding — don't reset
+  // (S.parejas already updated live via onSelP during onboarding)
 
   saveState();
   document.getElementById('onboarding').style.display='none';
@@ -1967,6 +2011,8 @@ function obStartRound(){
 }
 
 function initOnboarding(){
+  // Reset parejas for fresh configuration
+  S.parejas=[[[-1,-1],[-1,-1]],[[-1,-1],[-1,-1]],[[-1,-1],[-1,-1]]];
   // Pre-fill from saved state only if players have actual names
   if(S.players && S.players.length && S.players.some(p=>p.n.trim())){
     obPlayers = S.players.map(p=>({n:p.n,hcp:String(p.hcp),col:p.col}));
@@ -2000,7 +2046,147 @@ function initOnboarding(){
   obRenderPlayers();
 }
 
-/* ===== INIT ===== */
+/* ===== SCORECARD VIEW TOGGLE ===== */
+function setSCView(v){
+  let isGross = v==='gross';
+  document.getElementById('sc-view-gross').style.display = isGross?'block':'none';
+  document.getElementById('sc-view-net').style.display   = isGross?'none':'block';
+  let tg=document.getElementById('sc-tab-gross'), tn=document.getElementById('sc-tab-net');
+  tg.style.background = isGross?'var(--navy)':'transparent';
+  tg.style.color       = isGross?'#fff':'var(--navy)';
+  tn.style.background  = isGross?'transparent':'var(--navy)';
+  tn.style.color        = isGross?'var(--navy)':'#fff';
+}
+
+/* ===== RESUMEN FINAL ===== */
+function showResumen(){
+  renderTarjeta(); // ensure scorecard is fresh
+  let content = document.getElementById('resumen-content');
+  let html = '';
+
+  // ── Cancha & fecha
+  document.getElementById('res-cancha-fecha').textContent =
+    `${S.cancha} · ${new Date().toLocaleDateString('es-CL',{day:'2-digit',month:'long',year:'numeric'})}`;
+
+  // ── STROKE PLAY leaderboard (always shown)
+  let strokeData = S.players.map((p,pi)=>{
+    let g=0, net=0, par=0;
+    for(let h=1;h<=S.nh;h++){
+      if(!S.scores[h]) continue;
+      g+=S.scores[h][pi]; net+=S.scores[h][pi]-hcpS(pi,h); par+=S.pars[h-1];
+    }
+    let diff=net-par, ds=diff===0?'E':diff>0?'+'+diff:''+diff;
+    return {...p,pi,g,net,par,diff,ds};
+  }).sort((a,b)=>a.net-b.net||a.g-b.g);
+
+  html+=`<div style="margin-bottom:20px">
+    <div style="font-family:'Oswald',sans-serif;font-size:11px;color:var(--gold);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">⛳ Leaderboard</div>
+    ${strokeData.map((p,pos)=>{
+      let medal = pos===0?'🥇':pos===1?'🥈':pos===2?'🥉':'';
+      let isLead = pos===0&&p.par>0;
+      return `<div style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:${isLead?'rgba(200,168,75,.15)':'rgba(255,255,255,.05)'};border-radius:10px;margin-bottom:6px;border:1px solid ${isLead?'rgba(200,168,75,.3)':'rgba(255,255,255,.08)'}">
+        <div style="font-size:20px;width:28px;text-align:center">${medal||pos+1}</div>
+        <div style="width:34px;height:34px;border-radius:50%;background:${p.col};display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;font-family:'Oswald',sans-serif;flex-shrink:0">${av(p)}</div>
+        <div style="flex:1">
+          <div style="font-family:'Oswald',sans-serif;font-size:15px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:.3px">${p.n}</div>
+          <div style="font-size:11px;color:rgba(255,255,255,.4)">Hcp ${p.hcp} · Bruto ${p.g||'—'}</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-family:'Oswald',sans-serif;font-size:28px;font-weight:700;color:${isLead?'var(--gold)':'#fff'};line-height:1">${p.par?p.net:'—'}</div>
+          <div style="font-family:'Oswald',sans-serif;font-size:14px;font-weight:700;color:${p.diff<0?'#4ade80':p.diff===0?'rgba(255,255,255,.4)':'#f87171'}">${p.par?p.ds:''}</div>
+        </div>
+      </div>`;
+    }).join('')}
+  </div>`;
+
+  // Fix: show neto score in leaderboard
+  html = html; // neto already in strokeData.n
+  // Re-render properly
+  html = `<div style="margin-bottom:20px">
+    <div style="font-family:'Oswald',sans-serif;font-size:11px;color:var(--gold);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">⛳ Leaderboard</div>
+    ${strokeData.map((p,pos)=>{
+      let medal=pos===0?'🥇':pos===1?'🥈':pos===2?'🥉':'';
+      let isLead=pos===0&&p.par>0;
+      return `<div style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:${isLead?'rgba(200,168,75,.15)':'rgba(255,255,255,.05)'};border-radius:10px;margin-bottom:6px;border:1px solid ${isLead?'rgba(200,168,75,.3)':'rgba(255,255,255,.08)'}">
+        <div style="font-size:18px;width:24px;text-align:center">${medal||(pos+1)+'.'}</div>
+        <div style="width:34px;height:34px;border-radius:50%;background:${p.col};display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;font-family:'Oswald',sans-serif;flex-shrink:0">${av(p)}</div>
+        <div style="flex:1">
+          <div style="font-family:'Oswald',sans-serif;font-size:15px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:.3px">${p.n}</div>
+          <div style="font-size:10px;color:rgba(255,255,255,.4)">Hcp ${p.hcp} · Bruto ${p.g||'—'} · Neto ${p.net||'—'}</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-family:'Oswald',sans-serif;font-size:28px;font-weight:700;color:${isLead?'var(--gold)':'#fff'};line-height:1">${p.par?p.n:''}</div>
+          <div style="font-family:'Oswald',sans-serif;font-size:14px;font-weight:700;color:${p.diff<0?'#4ade80':p.diff===0?'rgba(255,255,255,.4)':'#f87171'}">${p.par?p.ds:''}</div>
+        </div>
+      </div>`;
+    }).join('')}
+  </div>`;
+
+  // ── COLOMBIANA
+  if(S.mods.colombiana){
+    let{acum}=calcCol();
+    let sorted=S.players.map((p,i)=>({...p,i,pts:acum[i]})).sort((a,b)=>b.pts-a.pts);
+    html+=`<div style="margin-bottom:20px">
+      <div style="font-family:'Oswald',sans-serif;font-size:11px;color:var(--gold);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">⭐ Colombiana</div>
+      ${sorted.map((p,pos)=>`
+        <div style="display:flex;align-items:center;gap:10px;padding:11px 14px;background:${pos===0&&p.pts>0?'rgba(200,168,75,.15)':'rgba(255,255,255,.05)'};border-radius:10px;margin-bottom:6px;border:1px solid ${pos===0&&p.pts>0?'rgba(200,168,75,.3)':'rgba(255,255,255,.08)'}">
+          <div style="width:34px;height:34px;border-radius:50%;background:${p.col};display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;font-family:'Oswald',sans-serif">${av(p)}</div>
+          <div style="flex:1;font-family:'Oswald',sans-serif;font-size:15px;font-weight:700;color:#fff;text-transform:uppercase">${p.n}</div>
+          <div style="font-family:'Oswald',sans-serif;font-size:28px;font-weight:700;color:${pos===0&&p.pts>0?'var(--gold)':'#fff'}">${p.pts}</div>
+          <div style="font-size:10px;color:rgba(255,255,255,.4);font-family:'Oswald',sans-serif">pts</div>
+        </div>`).join('')}
+    </div>`;
+  }
+
+  // ── STABLEFORD
+  if(S.mods.stableford){
+    let stbl=calcStableford().sort((a,b)=>b.pts-a.pts);
+    html+=`<div style="margin-bottom:20px">
+      <div style="font-family:'Oswald',sans-serif;font-size:11px;color:var(--gold);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">🏆 Stableford</div>
+      ${stbl.map((p,pos)=>`
+        <div style="display:flex;align-items:center;gap:10px;padding:11px 14px;background:${pos===0&&p.pts>0?'rgba(200,168,75,.15)':'rgba(255,255,255,.05)'};border-radius:10px;margin-bottom:6px;border:1px solid ${pos===0&&p.pts>0?'rgba(200,168,75,.3)':'rgba(255,255,255,.08)'}">
+          <div style="width:34px;height:34px;border-radius:50%;background:${p.col};display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;font-family:'Oswald',sans-serif">${av(p)}</div>
+          <div style="flex:1;font-family:'Oswald',sans-serif;font-size:15px;font-weight:700;color:#fff;text-transform:uppercase">${p.n}</div>
+          <div style="font-family:'Oswald',sans-serif;font-size:28px;font-weight:700;color:${pos===0&&p.pts>0?'var(--gold)':'#fff'}">${p.pts}</div>
+          <div style="font-size:10px;color:rgba(255,255,255,.4);font-family:'Oswald',sans-serif">pts</div>
+        </div>`).join('')}
+    </div>`;
+  }
+
+  content.innerHTML = html;
+  document.getElementById('resumen-overlay').style.display='block';
+  document.getElementById('resumen-overlay').scrollTop=0;
+}
+
+function closeResumen(){
+  document.getElementById('resumen-overlay').style.display='none';
+}
+
+async function exportResumen(){
+  // Load html2canvas dynamically
+  if(!window.html2canvas){
+    let s=document.createElement('script');
+    s.src='https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+    document.head.appendChild(s);
+    await new Promise(r=>s.onload=r);
+  }
+  let el=document.getElementById('resumen-overlay').querySelector('div');
+  let btn=document.querySelector('[onclick="exportResumen()"]');
+  btn.style.display='none';
+  try{
+    let canvas=await html2canvas(el,{
+      backgroundColor:'#0a2c4d',
+      scale:2,
+      useCORS:true,
+      logging:false
+    });
+    let link=document.createElement('a');
+    link.download=`FORE_${S.cancha.replace(/ /g,'_')}_${new Date().toLocaleDateString('es-CL').replace(/\//g,'-')}.png`;
+    link.href=canvas.toDataURL('image/png');
+    link.click();
+  } catch(e){ alert('No se pudo exportar. Intenta hacer una captura de pantalla.'); }
+  btn.style.display='flex';
+}
 updateInf(); renderNav(); renderEntries(); renderColLive(); renderDosLive(); renderStblLive();
 
 // Show onboarding if first time or not setup yet
